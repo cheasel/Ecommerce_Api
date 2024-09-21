@@ -20,6 +20,12 @@ namespace eCommerceApi.Model
         public int CategoryId { get; set; }
 
         // Navigation property
-        //public Category Category { get; set; }
+        public Category Category { get; set; }
+
+        // Navigation property for many to many
+        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Like> Likes { get; set; }
     }
 }

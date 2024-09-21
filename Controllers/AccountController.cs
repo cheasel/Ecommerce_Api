@@ -51,7 +51,7 @@ namespace eCommerceApi.Controllers
                 new NewUserDto{
                     Username = user.UserName,
                     Email = user.Email,
-                    Token = await _tokenService.CreateToken(user)
+                    Token = _tokenService.CreateToken(user)
                 }
             );
         }

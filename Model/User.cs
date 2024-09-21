@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eCommerceApi.Model
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<int>
     {
-        
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }   
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Like> Likes { get; set; }
     }
 }

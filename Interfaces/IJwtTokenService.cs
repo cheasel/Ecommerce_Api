@@ -8,6 +8,6 @@ namespace eCommerceApi.Interfaces
 {
     public interface IJwtTokenService
     {
-        Task<string> CreateToken(User user);
+        string CreateToken(User user);
     }
 }

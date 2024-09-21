@@ -12,13 +12,20 @@ namespace eCommerceApi.Model
         public DateTime OrderDate { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal TotalAmount { get; set; }
-        public string Status { get; set; }
-        public string ShoppingAddress { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string ShoppingAddress { get; set; } = string.Empty;
 
         // Foreign Key for User
-        //public int UserId { get; set; }
+        public int UserId { get; set; }
 
         // Navigation property for User
-        //public Users User { get; set; }
+        public User User { get; set; }
+
+        // Navigation property for one to many
+        public ICollection<Payment> Payments { get; set; }
+
+        // Navigation property for many to many
+        public ICollection<OrderItem> OrderItems { get; set; }
+
     }
 }

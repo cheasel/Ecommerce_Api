@@ -11,6 +11,6 @@ namespace eCommerceApi.Model
         public string Name { get; set; } = string.Empty;
 
         // Navigation property - Category can have many Products
-        //public List<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }
