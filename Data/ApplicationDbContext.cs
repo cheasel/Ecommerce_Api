@@ -127,6 +127,23 @@ namespace eCommerceApi.Data
                 .HasOne(l => l.Review)
                 .WithMany(r => r.Likes)
                 .HasForeignKey(l => new { l.UserId, l.ProductId }).OnDelete(DeleteBehavior.Restrict);
+
+            List<IdentityRole> roles = new List<IdentityRole>{
+                new IdentityRole{
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole{
+                    Name = "User",
+                    NormalizedName = "USER"
+                },
+                new IdentityRole{
+                    Name = "Vendor",
+                    NormalizedName = "VENDOR"
+                }
+            };
+
+            builder.Entity<IdentityRole>().HasData(roles);
         }
     }
 }

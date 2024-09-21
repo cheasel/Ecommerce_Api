@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using eCommerceApi.Data;
 using eCommerceApi.Dtos.Account;
 using eCommerceApi.Interfaces;
+using eCommerceApi.Mappers;
 using eCommerceApi.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +23,27 @@ namespace eCommerceApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtTokenService _tokenService;
+        private readonly IAccountRepository _accountRepo;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService tokenService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService tokenService, IAccountRepository accountRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _accountRepo = accountRepo;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll() {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            var users = await _accountRepo.GetAllAsync();
+            
+            var userDto = users.Select(u => u.ToUserDto()).ToList();
+
+            return Ok(userDto);
         }
 
         [HttpPost("login")]
@@ -54,6 +72,42 @@ namespace eCommerceApi.Controllers
                     Token = _tokenService.CreateToken(user)
                 }
             );
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto){
+            try {
+                if(!ModelState.IsValid){
+                    return BadRequest(ModelState);
+                }
+
+                var User = new User{
+                    UserName = registerDto.Username,
+                    Email = registerDto.Email
+                };
+
+                var createdUser = await _userManager.CreateAsync(User, registerDto.Password);
+
+                if(createdUser.Succeeded){
+                    var roleResult = await _userManager.AddToRoleAsync(User, "User");
+
+                    if(roleResult.Succeeded){
+                        return Ok(
+                            new NewUserDto{
+                                Username = User.UserName,
+                                Email = User.Email,
+                                Token = _tokenService.CreateToken(User)
+                            }
+                        );
+                    }else{
+                        return StatusCode(500, roleResult.Errors);
+                    }
+                }else{
+                    return StatusCode(500, createdUser.Errors);
+                }
+            } catch(Exception e) {
+                return StatusCode(500, e);
+            }
         }
     }
 }
