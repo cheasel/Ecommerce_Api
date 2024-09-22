@@ -11,7 +11,7 @@ namespace eCommerceApi.Dtos.Account
         public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        //public string Role { get; set; }
+        public string Role { get; set; }
         //public DateTime Created_at { get; set; }
         public List<ShoppingCart> Carts { get; set; }
         public List<Address> Addresses { get; set; }

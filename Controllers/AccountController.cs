@@ -9,6 +9,7 @@ using eCommerceApi.Dtos.Account;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
 using eCommerceApi.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ namespace eCommerceApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll() {
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
@@ -41,9 +43,13 @@ namespace eCommerceApi.Controllers
 
             var users = await _accountRepo.GetAllAsync();
             
-            var userDto = users.Select(u => u.ToUserDto()).ToList();
+            //var userDto = users.Select( u => u.ToUserDto(_userManager)).ToList();
+            var userDtos = new List<UserDto>();
+            foreach(var user in users){
+                userDtos.Add(await user.ToUserDto(_userManager));
+            }
 
-            return Ok(userDto);
+            return Ok(userDtos);
         }
 
         [HttpPost("login")]
@@ -65,11 +71,13 @@ namespace eCommerceApi.Controllers
                 return Unauthorized("Username not found and/or password incorrect");
             }
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+
             return Ok(
                 new NewUserDto{
                     Username = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user)
+                    Token = await _tokenService.CreateToken(user)
                 }
             );
         }
@@ -89,14 +97,14 @@ namespace eCommerceApi.Controllers
                 var createdUser = await _userManager.CreateAsync(User, registerDto.Password);
 
                 if(createdUser.Succeeded){
-                    var roleResult = await _userManager.AddToRoleAsync(User, "User");
+                    var roleResult = await _userManager.AddToRoleAsync(User, "Customer");
 
                     if(roleResult.Succeeded){
                         return Ok(
                             new NewUserDto{
                                 Username = User.UserName,
                                 Email = User.Email,
-                                Token = _tokenService.CreateToken(User)
+                                Token = await _tokenService.CreateToken(User)
                             }
                         );
                     }else{
