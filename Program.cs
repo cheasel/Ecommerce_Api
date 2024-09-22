@@ -19,8 +19,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -53,9 +51,11 @@ builder.Services.AddSwaggerGen(option =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });*/
 
+// Add Dbcontext with Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add Identity
 builder.Services.AddIdentity<User, UserRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -66,7 +66,7 @@ builder.Services.AddIdentity<User, UserRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-
+// JWT Authentication setup
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = 
@@ -89,13 +89,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-/*builder.Services.AddAuthorization(options =>
+// Add authorization services
+builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("Vendor", policy => policy.RequireRole("Vendor"));
-    options.AddPolicy("User", policy => policy.RequireRole("User"));
-});*/
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("VendorOnly", policy => policy.RequireRole("Vendor"));
+});
 
+// Add Interface Scoped
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
@@ -115,4 +116,54 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using(var scope = app.Services.CreateScope()){
+    var services = scope.ServiceProvider;
+    await CreateRoles(services);
+}
+
+Console.WriteLine("Application is starting...");
 app.Run();
+
+async Task CreateRoles(IServiceProvider serviceProvider){
+    Console.WriteLine("Starting role creation...");
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<UserRole>>();
+    var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+    string[] roleNames = { "Admin", "Vendor", "Customer" };
+
+    foreach (var roleName in roleNames){
+        // Create the roles and seed them to the database
+        var roleExist = await roleManager.RoleExistsAsync(roleName);
+        if(!roleExist){
+            var role = new UserRole { Name = roleName };
+            var roleResult = await roleManager.CreateAsync(role);
+
+            if(!roleResult.Succeeded){
+                Console.WriteLine($"Failed to create role: {roleName}");
+                foreach (var error in roleResult.Errors){
+                    Console.WriteLine($"Error: {error.Description}");
+                }
+            }
+            else{
+                Console.WriteLine($"Successfully created role: {roleName}");
+            }
+        }
+        else{
+            Console.WriteLine($"Role {roleName} already exists.");
+        }
+    }
+
+    // Create an admin user if one does not exist
+    var adminUser = await userManager.FindByEmailAsync("admin@example.com");
+    if(adminUser == null){
+        var newAdmin = new User{
+            UserName = "admin@example.com",
+            Email = "admin@example.com"
+        };
+
+        var createAdmin = await userManager.CreateAsync(newAdmin, "AdminPassword123!");
+        if(createAdmin.Succeeded){
+            await userManager.AddToRoleAsync(newAdmin, "Admin");
+        }
+    }
+}

@@ -12,7 +12,7 @@ using eCommerceApi.Data;
 namespace eCommerceApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240921091937_AddRolesToDb")]
+    [Migration("20240922071617_AddRolesToDb")]
     partial class AddRolesToDb
     {
         /// <inheritdoc />
@@ -24,45 +24,6 @@ namespace eCommerceApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityRole");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "cc62a07b-0ea5-414a-97c2-46beff9e97ee",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "6c658284-f8b5-4140-92cc-8eeb5a3c78c9",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "b33e5a1d-3dff-4174-b32d-dc1125eed12f",
-                            Name = "Vendor",
-                            NormalizedName = "VENDOR"
-                        });
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {

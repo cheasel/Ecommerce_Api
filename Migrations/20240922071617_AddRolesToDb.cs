@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eCommerceApi.Migrations
 {
     /// <inheritdoc />
-    public partial class TestUpdateModelAndRelation : Migration
+    public partial class AddRolesToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

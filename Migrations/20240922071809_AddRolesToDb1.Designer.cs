@@ -12,8 +12,8 @@ using eCommerceApi.Data;
 namespace eCommerceApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240921071547_TestUpdateModelAndRelation")]
-    partial class TestUpdateModelAndRelation
+    [Migration("20240922071809_AddRolesToDb1")]
+    partial class AddRolesToDb1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
