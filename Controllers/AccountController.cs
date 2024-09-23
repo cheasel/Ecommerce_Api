@@ -19,7 +19,7 @@ namespace eCommerceApi.Controllers
 {
     [Route("api/account")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;

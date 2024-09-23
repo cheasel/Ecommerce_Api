@@ -27,6 +27,7 @@ namespace eCommerceApi.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,35 +39,48 @@ namespace eCommerceApi.Data
             builder.Entity<User>()
                 .HasMany(u => u.Addresses)
                 .WithOne(a => a.User)
-                .HasForeignKey(a => a.UserId);
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<User>()
                 .HasMany(u => u.Orders)
                 .WithOne(o => o.User)
-                .HasForeignKey(o => o.UserId);
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<User>()
                 .HasMany(u => u.ShoppingCarts)
                 .WithOne(s => s.User)
-                .HasForeignKey(s => s.UserId);
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // User one to one Relation
             builder.Entity<User>()
                 .HasOne(u => u.Vendor)
                 .WithOne(v => v.User)
-                .HasForeignKey<Vendor>(v => v.UserId);
+                .HasForeignKey<Vendor>(v => v.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Vendor one to many Relation
+            builder.Entity<Vendor>()
+                .HasMany(v => v.Products)
+                .WithOne(p => p.Vendor)
+                .HasForeignKey(p => p.VendorId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             // Category one to many Relation
             builder.Entity<Category>()
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Category)
-                .HasForeignKey(p => p.CategoryId);
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Order one to many Relation
             builder.Entity<Order>()
                 .HasMany(o => o.Payments)
                 .WithOne(p  => p.Order)
-                .HasForeignKey(p => p.OrderId);
+                .HasForeignKey(p => p.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // OrderItem many to many Relation
             builder.Entity<OrderItem>()
@@ -75,12 +89,14 @@ namespace eCommerceApi.Data
             builder.Entity<OrderItem>()
                 .HasOne(o => o.Order)
                 .WithMany(o => o.OrderItems)
-                .HasForeignKey(o => o.OrderId);
+                .HasForeignKey(o => o.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<OrderItem>()
                 .HasOne(o => o.Product)
                 .WithMany(p => p.OrderItems)
-                .HasForeignKey(o => o.ProductId);
+                .HasForeignKey(o => o.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // CartItem many to many Relation
             builder.Entity<CartItem>()
@@ -89,12 +105,14 @@ namespace eCommerceApi.Data
             builder.Entity<CartItem>()
                 .HasOne(c => c.ShoppingCart)
                 .WithMany(s => s.CartItems)
-                .HasForeignKey(c => c.CartId);
+                .HasForeignKey(c => c.CartId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<CartItem>()
                 .HasOne(c => c.Product)
                 .WithMany(p => p.CartItems)
-                .HasForeignKey(o => o.ProductId);
+                .HasForeignKey(o => o.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Review many to many Relation
             builder.Entity<Review>()

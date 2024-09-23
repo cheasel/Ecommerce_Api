@@ -17,5 +17,8 @@ namespace eCommerceApi.Model
 
         // Navigation property for one to one 
         public User User { get; set; }
+
+        // Navigation property for one to many
+        public ICollection<Product> Products { get; set; }
     }
 }

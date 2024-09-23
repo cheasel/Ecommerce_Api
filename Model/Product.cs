@@ -18,9 +18,11 @@ namespace eCommerceApi.Model
 
         // Foreign Key for Category
         public int CategoryId { get; set; }
+        public int VendorId { get; set; }
 
         // Navigation property
         public Category Category { get; set; }
+        public Vendor Vendor { get; set; }
 
         // Navigation property for many to many
         public ICollection<OrderItem> OrderItems { get; set; }

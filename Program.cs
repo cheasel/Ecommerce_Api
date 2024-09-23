@@ -108,6 +108,9 @@ builder.Services.AddAuthorization(options =>
 // Add Interface Scoped
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 
 var app = builder.Build();
 
