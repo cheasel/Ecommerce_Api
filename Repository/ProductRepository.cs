@@ -29,7 +29,14 @@ namespace eCommerceApi.Repository
 
         public async Task<List<Product>> GetAllAsync()
         {
-            var products = _context.Products.AsQueryable();
+            var products = _context.Products
+            .Include(oi => oi.OrderItems)
+                .ThenInclude(o => o.Order)
+            .Include(ci => ci.CartItems)
+                .ThenInclude(c => c.ShoppingCart)
+            .Include(r => r.Reviews)
+            .Include(l => l.Likes)
+            .AsQueryable();
 
             // For Filter
 
@@ -39,7 +46,14 @@ namespace eCommerceApi.Repository
 
         public async Task<Product> GetByIdAsync(int id)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Products
+            .Include(o => o.OrderItems)
+                .ThenInclude(o => o.Order)
+            .Include(c => c.CartItems)
+                .ThenInclude(c => c.ShoppingCart)
+            .Include(r => r.Reviews)
+            .Include(l => l.Likes)
+            .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Product?> UpdateAsync(int id, UpdateProductDto productDto)

@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using eCommerceApi.Dtos.Like;
+using eCommerceApi.Model;
+
+namespace eCommerceApi.Mappers
+{
+    public static class LikeMapper
+    {
+        public static LikeDto ToLikeDto(this Like likeModel){
+            return new LikeDto {
+                Id = likeModel.Id,
+                LikeDate = likeModel.LikeDate,
+                CreatedBy = "ddd",
+            };
+        }
+    }
+}

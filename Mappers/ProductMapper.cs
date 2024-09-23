@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eCommerceApi.Dtos.Order;
 using eCommerceApi.Dtos.Product;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
@@ -19,7 +20,11 @@ namespace eCommerceApi.Mappers
                 Description = productModel.Description,
                 Price = productModel.Price,
                 Stock = productModel.Stock,
-                CategoryName = categoryName
+                CategoryName = categoryName,
+                Orders = productModel.OrderItems.Select(o => o.Order.ToOrderDto()).ToList(),
+                Carts = productModel.CartItems.Select(c => c.ShoppingCart.ToCartDto()).ToList(),
+                Reviews = productModel.Reviews.Select(r => r.ToReviewDto()).ToList(),
+                Likes = productModel.Likes.Select(l => l.ToLikeDto()).ToList()
             };
         }
 

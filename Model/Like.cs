@@ -9,17 +9,16 @@ namespace eCommerceApi.Model
     {
         public int Id { get; set; }
         public DateTime LikeDate { get; set; }
+        public string LikeType { get; set; }
 
         // Foreign key
         public int UserId { get; set; }
-        public int ProductId { get; set; }
-        //public int? ReviewId { get; set; }
+        public int? ProductId { get; set; }
+        public int? ReviewId { get; set; }
 
         // Navigation property
         public User User { get; set; }
         public Product Product { get; set; }
-
-        // Foreign key for Review (composite key)
         public Review Review { get; set; }
     }
 }

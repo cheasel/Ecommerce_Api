@@ -21,9 +21,9 @@ namespace eCommerceApi.Mappers
                 Role = roles.FirstOrDefault(),
                 Carts = userModel.ShoppingCarts.Select(s => s).ToList(),
                 Addresses = userModel.Addresses.Select(a => a).ToList(),
-                Orders = userModel.Orders.Select(o => o).ToList(),
-                Reviews = userModel.Reviews.Select(r => r).ToList(),
-                Likes = userModel.Likes.Select(l => l).ToList()
+                Orders = userModel.Orders.Select(o => o.ToOrderDto()).ToList(),
+                Reviews = userModel.Reviews.Select(r => r.ToReviewDto()).ToList(),
+                Likes = userModel.Likes.Select(l => l.ToLikeDto()).ToList()
             };
         }
     }
