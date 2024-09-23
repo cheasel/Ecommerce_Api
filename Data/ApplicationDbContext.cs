@@ -49,6 +49,12 @@ namespace eCommerceApi.Data
                 .HasMany(u => u.ShoppingCarts)
                 .WithOne(s => s.User)
                 .HasForeignKey(s => s.UserId);
+
+            // User one to one Relation
+            builder.Entity<User>()
+                .HasOne(u => u.Vendor)
+                .WithOne(v => v.User)
+                .HasForeignKey<Vendor>(v => v.UserId);
             
             // Category one to many Relation
             builder.Entity<Category>()

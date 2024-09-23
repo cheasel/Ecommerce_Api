@@ -13,5 +13,6 @@ namespace eCommerceApi.Model
         public ICollection<Order> Orders { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Like> Likes { get; set; }
+        public Vendor Vendor { get; set; }
     }
 }
