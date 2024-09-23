@@ -11,7 +11,7 @@ namespace eCommerceApi.Mappers
     {
         public static LikeDto ToLikeDto(this Like likeModel){
             return new LikeDto {
-                Id = likeModel.Id,
+                //Id = likeModel.Id,
                 LikeDate = likeModel.LikeDate,
                 CreatedBy = "ddd",
             };

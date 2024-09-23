@@ -8,6 +8,7 @@ namespace eCommerceApi.Model
 {
     public class OrderItem
     {
+        //public int Id { get; set; }
         public int Quantity { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }

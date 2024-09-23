@@ -33,106 +33,106 @@ namespace eCommerceApi.Data
         {
             base.OnModelCreating(builder);
 
-            //builder.Entity<User>().Property(u => u.Id).HasColumnType("int");
-
             // User one to many Relation
             builder.Entity<User>()
                 .HasMany(u => u.Addresses)
                 .WithOne(a => a.User)
                 .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<User>()
                 .HasMany(u => u.Orders)
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<User>()
                 .HasMany(u => u.ShoppingCarts)
                 .WithOne(s => s.User)
                 .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // User one to one Relation
             builder.Entity<User>()
                 .HasOne(u => u.Vendor)
                 .WithOne(v => v.User)
                 .HasForeignKey<Vendor>(v => v.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Vendor one to many Relation
             builder.Entity<Vendor>()
                 .HasMany(v => v.Products)
                 .WithOne(p => p.Vendor)
                 .HasForeignKey(p => p.VendorId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             
             // Category one to many Relation
             builder.Entity<Category>()
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Order one to many Relation
             builder.Entity<Order>()
                 .HasMany(o => o.Payments)
                 .WithOne(p  => p.Order)
                 .HasForeignKey(p => p.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // OrderItem many to many Relation
             builder.Entity<OrderItem>()
-                .HasKey(o => new { o.OrderId, o.ProductId});
+                .HasKey(oi => new { oi.OrderId, oi.ProductId});
             
             builder.Entity<OrderItem>()
-                .HasOne(o => o.Order)
+                .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
-                .HasForeignKey(o => o.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<OrderItem>()
-                .HasOne(o => o.Product)
+                .HasOne(oi => oi.Product)
                 .WithMany(p => p.OrderItems)
-                .HasForeignKey(o => o.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // CartItem many to many Relation
             builder.Entity<CartItem>()
-                .HasKey(c => new { c.CartId, c.ProductId});
+                .HasKey(ci => new { ci.CartId, ci.ProductId});
             
             builder.Entity<CartItem>()
-                .HasOne(c => c.ShoppingCart)
-                .WithMany(s => s.CartItems)
-                .HasForeignKey(c => c.CartId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(ci => ci.ShoppingCart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<CartItem>()
-                .HasOne(c => c.Product)
+                .HasOne(ci => ci.Product)
                 .WithMany(p => p.CartItems)
-                .HasForeignKey(o => o.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Review many to many Relation
             builder.Entity<Review>()
-                .HasKey(r => new { r.UserId, r.ProductId});
+                .HasKey(r => r.Id);
             
             builder.Entity<Review>()
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reviews)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Entity<Review>()
                 .HasOne(r => r.Product)
                 .WithMany(p => p.Reviews)
-                .HasForeignKey(o => o.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Like many to many Relation
+            //builder.Entity<Like>()
+            //    .HasKey(l => new { l.UserId, l.ProductId, l.ReviewId });
             builder.Entity<Like>()
-                .HasKey(l => new { l.UserId, l.ProductId, l.ReviewId});
+                .HasKey(l => l.Id);
 
             builder.Entity<Like>()
                 .HasOne(l => l.User)
@@ -143,52 +143,13 @@ namespace eCommerceApi.Data
                 .HasOne(l => l.Product)
                 .WithMany(p => p.Likes)
                 .HasForeignKey(l => l.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Like>()
                 .HasOne(l => l.Review)
                 .WithMany(r => r.Likes)
                 .HasForeignKey(l => l.ReviewId)
-                .OnDelete(DeleteBehavior.Cascade);
-            /*builder.Entity<Like>()
-                .HasKey(l => l.Id);
-            
-            builder.Entity<Like>()
-                .HasOne(l => l.User)
-                .WithMany(u => u.Likes)
-                .HasForeignKey(l => l.UserId).OnDelete(DeleteBehavior.Restrict);
-            
-            builder.Entity<Like>()
-                .HasOne(l => l.Product)
-                .WithMany(p => p.Likes)
-                .HasForeignKey(l => l.ProductId).OnDelete(DeleteBehavior.Restrict);*/
-
-            /*builder.Entity<Like>()
-                .HasOne(l => l.Review)
-                .WithMany(r => r.Likes)
-                .HasForeignKey(l => l.ReviewId).OnDelete(DeleteBehavior.Restrict);*/
-
-            builder.Entity<Like>()
-                .HasOne(l => l.Review)
-                .WithMany(r => r.Likes)
-                .HasForeignKey(l => new { l.UserId, l.ProductId }).OnDelete(DeleteBehavior.Restrict);
-
-            /*List<IdentityRole> roles = new List<IdentityRole>{
-                new IdentityRole{
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole{
-                    Name = "User",
-                    NormalizedName = "USER"
-                },
-                new IdentityRole{
-                    Name = "Vendor",
-                    NormalizedName = "VENDOR"
-                }
-            };
-
-            builder.Entity<IdentityRole>().HasData(roles);*/
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
