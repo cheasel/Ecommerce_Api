@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using eCommerceApi.Model;
 using eCommerceApi.Controllers;
 using eCommerceApi.Repository;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,11 +46,12 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
+    option.EnableAnnotations();
 });
 
-/*builder.Services.AddControllers().AddNewtonsoftJson(options => {
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-});*/
+builder.Services.AddControllers().AddJsonOptions(options => {
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 // Add Dbcontext with Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using eCommerceApi.Dtos.Product;
+using eCommerceApi.Helpers;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -27,14 +28,12 @@ namespace eCommerceApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(){
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
             }
 
-            var products = await _productRepo.GetAllAsync();
-
-            //var categoryName = await _categoryRepo.GetCategoryName(product.CategoryId);
+            var products = await _productRepo.GetAllAsync(query);
 
             var productDto = products.Select(p => p.ToProductDto(_categoryRepo)).ToList();
 

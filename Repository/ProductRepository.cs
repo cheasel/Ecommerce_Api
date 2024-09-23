@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eCommerceApi.Data;
 using eCommerceApi.Dtos.Product;
+using eCommerceApi.Helpers;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ namespace eCommerceApi.Repository
             return productModel;
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<List<Product>> GetAllAsync(QueryObject query)
         {
             var products = _context.Products
             .Include(oi => oi.OrderItems)
@@ -39,9 +40,25 @@ namespace eCommerceApi.Repository
             .AsQueryable();
 
             // For Filter
+            if(!string.IsNullOrWhiteSpace(query.Name)){
+                products = products.Where(p => p.Name.Contains(query.Name));
+            }
 
+            if(!(query.HighPrice == null)){
+                products = products.Where(p => p.Price >= query.LowPrice && p.Price <=  query.HighPrice);
+            }
 
-            return await products.ToListAsync();
+            if(query.SortBy.HasValue){
+                if(query.SortBy.Value == SortOptions.Name){
+                    products = query.IsDescending ? products.OrderByDescending(p => p.Name) : products.OrderBy(p => p.Name);
+                }else if(query.SortBy.Value == SortOptions.Price){
+                    products = query.IsDescending ? products.OrderByDescending(p => p.Price) : products.OrderBy(p => p.Price);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await products.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(int id)
