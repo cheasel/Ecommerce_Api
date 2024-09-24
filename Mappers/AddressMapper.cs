@@ -20,5 +20,17 @@ namespace eCommerceApi.Mappers
                 Country = addressModel.Country,
             };
         }
+
+        public static Address ToAddressFromCreateDto(this CreateAddressDto addressDto, int id){
+            return new Address {
+                AddressType = addressDto.AddressType,
+                Description = addressDto.Description,
+                City = addressDto.City,
+                State = addressDto.State,
+                PostalCode = addressDto.PostalCode,
+                Country = addressDto.Country,
+                UserId = id,
+            };
+        }
     }
 }
