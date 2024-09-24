@@ -23,7 +23,13 @@ namespace eCommerceApi.Repository
 
         public async Task<List<User>> GetAllAsync()
         {
-            var users = _userManager.Users.Include(s => s.ShoppingCarts).Include(a => a.Addresses).Include(o => o.Orders).Include(r => r.Reviews).Include(l => l.Likes).AsSplitQuery();
+            var users = _userManager.Users
+                        .Include(s => s.ShoppingCarts)
+                        .Include(a => a.Addresses)
+                        .Include(o => o.Orders)
+                        .Include(r => r.Reviews)
+                        .Include(l => l.Likes)
+                        .AsQueryable();
 
             return await users.ToListAsync();
         }

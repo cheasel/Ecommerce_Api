@@ -19,11 +19,11 @@ namespace eCommerceApi.Mappers
                 Username = userModel.UserName,
                 Email = userModel.Email,
                 Role = roles.FirstOrDefault(),
-                Carts = userModel.ShoppingCarts.Select(s => s).ToList(),
-                Addresses = userModel.Addresses.Select(a => a).ToList(),
+                Carts = userModel.ShoppingCarts.Select(s => s.ToCartDto()).ToList(),
+                Addresses = userModel.Addresses.Select(a => a.ToAddressDto()).ToList(),
                 Orders = userModel.Orders.Select(o => o.ToOrderDto()).ToList(),
                 Reviews = userModel.Reviews.Select(r => r.ToReviewDto()).ToList(),
-                Likes = userModel.Likes.Select(l => l.ToLikeDto()).ToList()
+                Likes = userModel.Likes.Select(l => l.ToLikeDto()).ToList(),
             };
         }
     }

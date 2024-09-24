@@ -38,5 +38,15 @@ namespace eCommerceApi.Mappers
                 VendorId = vendorId
             };
         }
+
+        public static CategoryProductDto ToProductFromCategory(this Product productModel){
+            return new CategoryProductDto {
+                Id = productModel.Id,
+                Name = productModel.Name,
+                Description = productModel.Description,
+                Price = productModel.Price,
+                Stock = productModel.Stock,
+            };
+        }
     }
 }

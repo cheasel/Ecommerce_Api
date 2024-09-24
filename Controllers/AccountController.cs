@@ -35,7 +35,7 @@ namespace eCommerceApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll() {
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
