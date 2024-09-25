@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using eCommerceApi.Data;
 using eCommerceApi.Dtos.Account;
+using eCommerceApi.Extensions;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
 using eCommerceApi.Model;
@@ -207,6 +208,38 @@ namespace eCommerceApi.Controllers
             {
                 return StatusCode(500, e);
             }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Update(UpdateUserDto userDto){
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            var username = User.GetUsername();
+            var user = await _userManager.FindByNameAsync(username);
+
+            if(user == null){
+                return NotFound();
+            }
+
+            user.UserName = userDto.Username;
+            user.Email = userDto.Email;
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.DateOfBirth = userDto.DateOfBirth;
+            user.ProfilePictureUrl = userDto.ProfilePictureUrl;
+
+            var result = await _userManager.UpdateAsync(user);
+            
+            if(!result.Succeeded){
+                return BadRequest(result.Errors);
+            }
+
+            return Ok(new {
+                Message = "User updated successfully"
+            });
         }
     }
 }
