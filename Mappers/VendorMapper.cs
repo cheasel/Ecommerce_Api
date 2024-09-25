@@ -10,7 +10,7 @@ namespace eCommerceApi.Mappers
 {
     public static class VendorMapper
     {
-        public static VendorDto ToVendorDto(this Vendor vendorModel, ICategoryRepository _categoryRepo, IAccountRepository _userRepo, IProductRepository _productRepo){
+        public static VendorDto ToVendorDto(this Vendor vendorModel){
             return new VendorDto {
                 Id = vendorModel.Id,
                 CompanyName = vendorModel.CompanyName,
@@ -21,6 +21,22 @@ namespace eCommerceApi.Mappers
                 WebsiteUrl = vendorModel.WebsiteUrl,
                 CreatedAt = vendorModel.CreatedAt,
                 UpdatedAt = vendorModel.UpdatedAt,
+                ProductCount = vendorModel.Products.Count,
+            };
+        }
+
+        public static FullVendorDto ToFullVendorDto(this Vendor vendorModel, ICategoryRepository _categoryRepo, IAccountRepository _userRepo, IProductRepository _productRepo){
+            return new FullVendorDto {
+                Id = vendorModel.Id,
+                CompanyName = vendorModel.CompanyName,
+                Description = vendorModel.Description,
+                Email = vendorModel.Email,
+                PhoneNumber = vendorModel.PhoneNumber,
+                Address = vendorModel.Address,
+                WebsiteUrl = vendorModel.WebsiteUrl,
+                CreatedAt = vendorModel.CreatedAt,
+                UpdatedAt = vendorModel.UpdatedAt,
+                ProductCount = vendorModel.Products.Count,
                 Products = vendorModel.Products.Select(p => p.ToProductDtoFromVendor(_categoryRepo)).ToList(),
             };
         }

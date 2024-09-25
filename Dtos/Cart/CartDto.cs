@@ -9,8 +9,8 @@ namespace eCommerceApi.Dtos.Cart
     public class CartDto
     {
         public int Id { get; set; }
-        public DateTime CreateAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public string CreatedBy { get; set; }
         //public List<ProductDto> Products { get; set; }
     }

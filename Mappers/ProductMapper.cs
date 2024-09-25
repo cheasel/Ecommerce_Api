@@ -12,7 +12,7 @@ namespace eCommerceApi.Mappers
 {
     public static class ProductMapper
     {
-        public static ProductDto ToProductDto(this Product productModel, ICategoryRepository _categoryRepo, IAccountRepository _userRepo, IProductRepository _productRepo){
+        public static ProductDto ToProductDto(this Product productModel, ICategoryRepository _categoryRepo){
             var categoryName = _categoryRepo.GetCategoryName(productModel.CategoryId).Result;
             //var username = _userRepo.GetUsername(productModel.VendorId).Result;
 
@@ -26,9 +26,33 @@ namespace eCommerceApi.Mappers
                 CreatedAt = productModel.CreatedAt,
                 UpdatedAt = productModel.UpdatedAt,
                 CategoryName = categoryName,
+                OrderCount = productModel.OrderItems.Count,
+                //CartCount = productModel.CartItems.Count,
+                reviewCount = productModel.Reviews.Count,
+                likeCount = productModel.Likes.Count,
+                //VendorName = username,
+            };
+        }
+
+        public static FullProductDto ToFullProductDto(this Product productModel, ICategoryRepository _categoryRepo, IAccountRepository _userRepo){
+            var categoryName = _categoryRepo.GetCategoryName(productModel.CategoryId).Result;
+            //var username = _userRepo.GetUsername(productModel.VendorId).Result;
+
+            return new FullProductDto{
+                Id = productModel.Id,
+                Name = productModel.Name,
+                Description = productModel.Description,
+                Price = productModel.Price,
+                Stock = productModel.Stock,
+                IsActive = productModel.IsActive,
+                CreatedAt = productModel.CreatedAt,
+                UpdatedAt = productModel.UpdatedAt,
+                CategoryName = categoryName,
+                OrderCount = productModel.OrderItems.Count,
+                reviewCount = productModel.Reviews.Count,
+                likeCount = productModel.Likes.Count,
                 //VendorName = username,
                 Orders = productModel.OrderItems.IsNullOrEmpty() ? [] : productModel.OrderItems.Select(o => o.Order.ToOrderDto(_userRepo)).ToList(),
-                Carts = productModel.CartItems.IsNullOrEmpty() ? [] : productModel.CartItems.Select(c => c.ShoppingCart.ToCartDto(_userRepo)).ToList(),
                 Reviews = productModel.Reviews.IsNullOrEmpty() ? [] : productModel.Reviews.Select(r => r.ToReviewDto(_userRepo)).ToList(),
                 Likes = productModel.Likes.IsNullOrEmpty() ? [] : productModel.Likes.Select(l => l.ToLikeDto(_userRepo)).ToList()
             };

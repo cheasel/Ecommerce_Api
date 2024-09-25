@@ -6,7 +6,7 @@ using eCommerceApi.Dtos.Product;
 
 namespace eCommerceApi.Dtos.Vendor
 {
-    public class VendorDto
+    public class FullVendorDto
     {
         public int Id { get; set; }
         public string CompanyName { get; set; }
@@ -19,5 +19,6 @@ namespace eCommerceApi.Dtos.Vendor
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int ProductCount { get; set; }
+        public List<VendorProductDto> Products { get; set; }
     }
 }

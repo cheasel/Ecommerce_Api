@@ -15,6 +15,13 @@ namespace eCommerceApi.Mappers
             return new CategoryDto {
                 Id = categoryModel.Id,
                 Name = categoryModel.Name,
+            };
+        }
+
+        public static FullCategoryDto ToFullCategoryDto(this Category categoryModel){
+            return new FullCategoryDto {
+                Id = categoryModel.Id,
+                Name = categoryModel.Name,
                 CreatedAt = categoryModel.CreatedAt,
                 UpdatedAt = categoryModel.UpdatedAt,
                 Products = categoryModel.Products.IsNullOrEmpty() ? [] : categoryModel.Products.Select(p => p.ToProductFromCategory()).ToList(),

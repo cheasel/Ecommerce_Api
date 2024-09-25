@@ -6,11 +6,10 @@ using eCommerceApi.Dtos.Cart;
 using eCommerceApi.Dtos.Like;
 using eCommerceApi.Dtos.Order;
 using eCommerceApi.Dtos.Review;
-using eCommerceApi.Model;
 
 namespace eCommerceApi.Dtos.Product
 {
-    public class ProductDto
+    public class FullProductDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -26,5 +25,10 @@ namespace eCommerceApi.Dtos.Product
         //public int CartCount { get; set; }
         public int reviewCount { get; set; }
         public int likeCount { get; set; }
+        
+        public List<OrderDto> Orders { get; set; }
+        //public List<CartDto> Carts { get; set; }
+        public List<ReviewDto> Reviews { get; set; }
+        public List<LikeDto> Likes { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(category.ToCategoryDto());
+            return Ok(category.ToFullCategoryDto());
         }
 
         [HttpPost]

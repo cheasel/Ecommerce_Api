@@ -6,12 +6,12 @@ using eCommerceApi.Dtos.Product;
 
 namespace eCommerceApi.Dtos.Category
 {
-    public class CategoryDto
+    public class FullCategoryDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        //public DateTime CreatedAt { get; set; }
-        //public DateTime UpdatedAt { get; set; }
-        //public List<CategoryProductDto> Products { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public List<CategoryProductDto> Products { get; set; }
     }
 }

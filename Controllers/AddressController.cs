@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eCommerceApi.Controllers
 {
     [ApiController]
-    [Route("api/Address")]
+    [Route("api/address")]
     public class AddressController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

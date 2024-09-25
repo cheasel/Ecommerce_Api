@@ -15,7 +15,7 @@ namespace eCommerceApi.Model
         [Column(TypeName = "decimal(10,2)")]
         public decimal TotalPrice => Quantity * UnitPrice;
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Foreign key
         public int OrderId { get; set; }

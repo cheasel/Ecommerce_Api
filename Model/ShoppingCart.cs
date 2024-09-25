@@ -8,8 +8,8 @@ namespace eCommerceApi.Model
     public class ShoppingCart
     {
         public int Id { get; set; }
-        public DateTime CreateAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Foreign key for User
         public int UserId { get; set; }

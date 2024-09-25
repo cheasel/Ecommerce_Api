@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eCommerceApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/vendor")]
     public class VendorController : ControllerBase
     {
         private readonly IVendorRepository _vendorRepo;
@@ -33,7 +33,7 @@ namespace eCommerceApi.Controllers
 
             var vendors = await _vendorRepo.GetAllAsync();
 
-            var vendorDto = vendors.Select(v => v.ToVendorDto(_categoryRepo, _accountRepo, _productRepo)).ToList();
+            var vendorDto = vendors.Select(v => v.ToVendorDto()).ToList();
 
             return Ok(vendorDto);
         }

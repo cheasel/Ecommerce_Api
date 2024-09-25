@@ -38,7 +38,7 @@ namespace eCommerceApi.Controllers
 
             var products = await _productRepo.GetAllAsync(query);
 
-            var productDto = products.Select(p => p.ToProductDto(_categoryRepo, _userRepo, _productRepo)).ToList();
+            var productDto = products.Select(p => p.ToProductDto(_categoryRepo)).ToList();
 
             return Ok(productDto);
         }
@@ -55,7 +55,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(product.ToProductDto(_categoryRepo, _userRepo, _productRepo));
+            return Ok(product.ToFullProductDto(_categoryRepo, _userRepo));
         }
 
         [HttpPost("{vendorId:int}")]
@@ -83,7 +83,7 @@ namespace eCommerceApi.Controllers
 
             return CreatedAtAction(nameof(GetById), new {
                 id = productModel.Id
-            }, productModel.ToProductDto(_categoryRepo, _userRepo, _productRepo));
+            }, productModel.ToFullProductDto(_categoryRepo, _userRepo));
         }
 
         [HttpPut("{id:int}")]
@@ -99,7 +99,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(productModel.ToProductDto(_categoryRepo, _userRepo, _productRepo));
+            return Ok(productModel.ToProductDto(_categoryRepo));
         }
 
         [HttpDelete("{id:int}")]

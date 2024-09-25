@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eCommerceApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/review")]
     public class ReviewController : ControllerBase
     {
         private readonly IReviewRepository _reviewRepo;
