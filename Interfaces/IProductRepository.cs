@@ -15,5 +15,7 @@ namespace eCommerceApi.Interfaces
         Task<Product> CreateAsync(Product productModel);
         Task<Product?> UpdateAsync(int id, UpdateProductDto productDto);
         Task<Product?> DeleteAsync(int id);
+        Task<string> GetProductName(int id);
+        Task<bool> ProductExists(int id);
     }
 }

@@ -11,8 +11,9 @@ namespace eCommerceApi.Mappers
 {
     public static class ProductMapper
     {
-        public static ProductDto ToProductDto(this Product productModel, ICategoryRepository _categoryRepo){
+        public static ProductDto ToProductDto(this Product productModel, ICategoryRepository _categoryRepo, IAccountRepository _userRepo, IProductRepository _productRepo){
             var categoryName = _categoryRepo.GetCategoryName(productModel.CategoryId).Result;
+            //var username = _userRepo.GetUsername(productModel.VendorId).Result;
 
             return new ProductDto{
                 Id = productModel.Id,
@@ -21,10 +22,11 @@ namespace eCommerceApi.Mappers
                 Price = productModel.Price,
                 Stock = productModel.Stock,
                 CategoryName = categoryName,
-                Orders = productModel.OrderItems.Select(o => o.Order.ToOrderDto()).ToList(),
-                Carts = productModel.CartItems.Select(c => c.ShoppingCart.ToCartDto()).ToList(),
-                Reviews = productModel.Reviews.Select(r => r.ToReviewDto()).ToList(),
-                Likes = productModel.Likes.Select(l => l.ToLikeDto()).ToList()
+                //VendorName = username,
+                Orders = productModel.OrderItems.Select(o => o.Order.ToOrderDto(_userRepo)).ToList(),
+                Carts = productModel.CartItems.Select(c => c.ShoppingCart.ToCartDto(_userRepo)).ToList(),
+                Reviews = productModel.Reviews.Select(r => r.ToReviewDto(_userRepo, _productRepo)).ToList(),
+                Likes = productModel.Likes.Select(l => l.ToLikeDto(_userRepo)).ToList()
             };
         }
 

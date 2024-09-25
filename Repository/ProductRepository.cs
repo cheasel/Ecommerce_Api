@@ -103,5 +103,15 @@ namespace eCommerceApi.Repository
 
             return productModel;
         }
+
+        public async Task<string> GetProductName(int id)
+        {
+            return await _context.Products.Where(p => p.Id == id).Select(p => p.Name).FirstOrDefaultAsync();
+        }
+
+        public Task<bool> ProductExists(int id)
+        {
+            return _context.Products.AnyAsync(p => p.Id == id);
+        }
     }
 }

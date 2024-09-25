@@ -33,5 +33,10 @@ namespace eCommerceApi.Repository
 
             return await users.ToListAsync();
         }
+
+        public async Task<string> GetUsername(int id)
+        {
+            return await _userManager.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
+        }
     }
 }

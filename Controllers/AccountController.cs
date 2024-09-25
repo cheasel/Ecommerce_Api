@@ -25,17 +25,19 @@ namespace eCommerceApi.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtTokenService _tokenService;
         private readonly IAccountRepository _accountRepo;
+        private readonly IProductRepository _productRepo;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService tokenService, IAccountRepository accountRepo)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService tokenService, IAccountRepository accountRepo, IProductRepository productRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _accountRepo = accountRepo;
+            _productRepo = productRepo;
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll() {
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
@@ -46,7 +48,7 @@ namespace eCommerceApi.Controllers
             //var userDto = users.Select( u => u.ToUserDto(_userManager)).ToList();
             var userDtos = new List<UserDto>();
             foreach(var user in users){
-                userDtos.Add(await user.ToUserDto(_userManager));
+                userDtos.Add(await user.ToUserDto(_userManager, _accountRepo, _productRepo));
             }
 
             return Ok(userDtos);

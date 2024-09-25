@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using eCommerceApi.Dtos.Account;
+using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,7 +12,7 @@ namespace eCommerceApi.Mappers
 {
     public static class UserMappers
     {   
-        public static async Task<UserDto> ToUserDto(this User userModel, UserManager<User> _userManager){
+        public static async Task<UserDto> ToUserDto(this User userModel, UserManager<User> _userManager, IAccountRepository _userRepo, IProductRepository _productRepo){
             var roles = await _userManager.GetRolesAsync(userModel);
 
             return new UserDto{
@@ -19,11 +20,11 @@ namespace eCommerceApi.Mappers
                 Username = userModel.UserName,
                 Email = userModel.Email,
                 Role = roles.FirstOrDefault(),
-                Carts = userModel.ShoppingCarts.Select(s => s.ToCartDto()).ToList(),
+                Carts = userModel.ShoppingCarts.Select(s => s.ToCartDto(_userRepo)).ToList(),
                 Addresses = userModel.Addresses.Select(a => a.ToAddressDto()).ToList(),
-                Orders = userModel.Orders.Select(o => o.ToOrderDto()).ToList(),
-                Reviews = userModel.Reviews.Select(r => r.ToReviewDto()).ToList(),
-                Likes = userModel.Likes.Select(l => l.ToLikeDto()).ToList(),
+                Orders = userModel.Orders.Select(o => o.ToOrderDto(_userRepo)).ToList(),
+                Reviews = userModel.Reviews.Select(r => r.ToReviewDto(_userRepo, _productRepo)).ToList(),
+                Likes = userModel.Likes.Select(l => l.ToLikeDto(_userRepo)).ToList(),
             };
         }
     }

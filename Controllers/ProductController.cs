@@ -19,12 +19,14 @@ namespace eCommerceApi.Controllers
         private readonly IProductRepository _productRepo;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IVendorRepository _vendorRepo;
+        private readonly IAccountRepository _userRepo;
 
-        public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, IVendorRepository vendorRepo)
+        public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, IVendorRepository vendorRepo, IAccountRepository userRepo)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _vendorRepo = vendorRepo;
+            _userRepo = userRepo;
         }
 
         [HttpGet]
@@ -35,7 +37,7 @@ namespace eCommerceApi.Controllers
 
             var products = await _productRepo.GetAllAsync(query);
 
-            var productDto = products.Select(p => p.ToProductDto(_categoryRepo)).ToList();
+            var productDto = products.Select(p => p.ToProductDto(_categoryRepo, _userRepo, _productRepo)).ToList();
 
             return Ok(productDto);
         }
@@ -52,7 +54,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(product.ToProductDto(_categoryRepo));
+            return Ok(product.ToProductDto(_categoryRepo, _userRepo, _productRepo));
         }
 
         [HttpPost("{vendorId:int}")]
@@ -79,7 +81,7 @@ namespace eCommerceApi.Controllers
 
             return CreatedAtAction(nameof(GetById), new {
                 id = productModel.Id
-            }, productModel.ToProductDto(_categoryRepo));
+            }, productModel.ToProductDto(_categoryRepo, _userRepo, _productRepo));
         }
 
         [HttpPut("{id:int}")]
@@ -94,7 +96,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(productModel.ToProductDto(_categoryRepo));
+            return Ok(productModel.ToProductDto(_categoryRepo, _userRepo, _productRepo));
         }
 
         [HttpDelete("{id:int}")]
