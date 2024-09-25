@@ -252,9 +252,8 @@ namespace eCommerceApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(10,2)");
@@ -590,7 +589,7 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.User", "User")
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -601,13 +600,13 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.ShoppingCart", "ShoppingCart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("eCommerceApi.Model.Product", "Product")
                         .WithMany("CartItems")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -645,7 +644,7 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -656,13 +655,13 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("eCommerceApi.Model.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -675,7 +674,7 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.Order", "Order")
                         .WithMany("Payments")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -692,7 +691,7 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.Vendor", "Vendor")
                         .WithMany("Products")
                         .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -705,13 +704,13 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("eCommerceApi.Model.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -724,7 +723,7 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.User", "User")
                         .WithMany("ShoppingCarts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -735,7 +734,7 @@ namespace eCommerceApi.Migrations
                     b.HasOne("eCommerceApi.Model.User", "User")
                         .WithOne("Vendor")
                         .HasForeignKey("eCommerceApi.Model.Vendor", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

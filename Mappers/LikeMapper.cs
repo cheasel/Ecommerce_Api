@@ -16,7 +16,8 @@ namespace eCommerceApi.Mappers
             return new LikeDto {
                 //Id = likeModel.Id,
                 LikeDate = likeModel.LikeDate,
-                CreatedBy = username,
+                LikeType = likeModel.LikeType,
+                LikedBy = username,
             };
         }
     }

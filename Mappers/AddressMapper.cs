@@ -18,6 +18,8 @@ namespace eCommerceApi.Mappers
                 State = addressModel.State,
                 PostalCode = addressModel.PostalCode,
                 Country = addressModel.Country,
+                CreatedAt = addressModel.CreatedAt,
+                UpdatedAt = addressModel.UpdatedAt,
             };
         }
 
@@ -29,6 +31,8 @@ namespace eCommerceApi.Mappers
                 State = addressDto.State,
                 PostalCode = addressDto.PostalCode,
                 Country = addressDto.Country,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
                 UserId = id,
             };
         }

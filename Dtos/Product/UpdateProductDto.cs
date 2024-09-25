@@ -8,17 +8,19 @@ namespace eCommerceApi.Dtos.Product
 {
     public class UpdateProductDto
     {
-        [Required]
+        [Required(ErrorMessage = "Product name is required")]
         [MaxLength(200, ErrorMessage = "Product name cannot be over 200 characters")]
         public string Name { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage = "Description is required")]
         [MaxLength(3000, ErrorMessage = "Description cannot be over 3000 characters")]
         public string Description { get; set; } = string.Empty;
-        [Required]
-        [Range(0.01, 9999999999)]
+        [Required(ErrorMessage = "Price is required")]
+        [Range(0.01, 999999999)]
         public decimal Price { get; set; }
-        [Required]
-        [Range(0, 999999)]
+        [Required(ErrorMessage = "Stock is required")]
+        [Range(0, 99999)]
         public int Stock { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
     }
 }

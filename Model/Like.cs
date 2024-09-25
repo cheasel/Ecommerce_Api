@@ -11,7 +11,7 @@ namespace eCommerceApi.Model
         [Key]
         public int Id { get; set; }
         public DateTime LikeDate { get; set; }
-        public string LikeType { get; set; }
+        public LikeType LikeType { get; set; } = LikeType.Product;
 
         // Foreign key
         public int UserId { get; set; }
@@ -22,5 +22,10 @@ namespace eCommerceApi.Model
         public User User { get; set; }
         public Product Product { get; set; }
         public Review Review { get; set; }
+    }
+
+    public enum LikeType{
+        Product,
+        Review
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eCommerceApi.Model;
 
 namespace eCommerceApi.Dtos.Like
 {
@@ -9,6 +10,7 @@ namespace eCommerceApi.Dtos.Like
     {
         //public int Id { get; set; }
         public DateTime LikeDate { get; set; }
-        public string CreatedBy { get; set; }
+        public LikeType LikeType { get; set; }
+        public string LikedBy { get; set; }
     }
 }

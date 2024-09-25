@@ -61,7 +61,7 @@ namespace eCommerceApi.Repository
             return await products.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products
             .Include(o => o.OrderItems)
@@ -85,6 +85,7 @@ namespace eCommerceApi.Repository
             existingProduct.Description = productDto.Description;
             existingProduct.Price = productDto.Price;
             existingProduct.Stock = productDto.Stock;
+            existingProduct.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

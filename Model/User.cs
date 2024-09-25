@@ -8,6 +8,11 @@ namespace eCommerceApi.Model
 {
     public class User : IdentityUser<int>
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? ProfilePictureUrl { get; set; }
+        
         public ICollection<ShoppingCart> ShoppingCarts { get; set; }   
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
         public ICollection<Order> Orders { get; set; }

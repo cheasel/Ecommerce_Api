@@ -10,6 +10,8 @@ namespace eCommerceApi.Dtos.Category
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public List<CategoryProductDto> Products { get; set; }
     }
 }

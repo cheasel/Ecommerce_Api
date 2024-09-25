@@ -9,6 +9,8 @@ namespace eCommerceApi.Model
     {
         //public int Id { get; set; }
         public int Quantity { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Foreign key
         public int CartId { get; set; }

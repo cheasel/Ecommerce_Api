@@ -19,6 +19,8 @@ namespace eCommerceApi.Mappers
                 TotalAmount = orderModel.TotalAmount,
                 Status = orderModel.Status,
                 ShoppingAddress = orderModel.ShoppingAddress,
+                CreatedAt = orderModel.CreatedAt,
+                UpdatedAt = orderModel.UpdatedAt,
                 CreatedBy = username,
                 //Payments = orderModel.Payments.Select(p => p.ToPaymentDto()).ToList(),
                 //OrderItems = orderModel.OrderItems.Select(o => o.ToOrderItemDto())

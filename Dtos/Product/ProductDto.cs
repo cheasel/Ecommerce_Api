@@ -17,8 +17,12 @@ namespace eCommerceApi.Dtos.Product
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public int Stock { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public string CategoryName { get; set; }
         public string VendorName { get; set; }
+        
         public List<OrderDto> Orders { get; set; }
         public List<CartDto> Carts { get; set; }
         public List<ReviewDto> Reviews { get; set; }

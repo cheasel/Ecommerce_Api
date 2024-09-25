@@ -71,6 +71,7 @@ namespace eCommerceApi.Repository
             existingAddress.State = addressDto.State;
             existingAddress.PostalCode = addressDto.PostalCode;
             existingAddress.Country = addressDto.Country;
+            existingAddress.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

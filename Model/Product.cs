@@ -15,6 +15,9 @@ namespace eCommerceApi.Model
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
         public int Stock { get; set; }
+        public bool IsActive { get; set; } = true;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Foreign Key for Category
         public int CategoryId { get; set; }

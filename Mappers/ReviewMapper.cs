@@ -12,18 +12,17 @@ namespace eCommerceApi.Mappers
 {
     public static class ReviewMapper
     {
-        public static ReviewDto ToReviewDto(this Review reviewModel, IAccountRepository _userRepo, IProductRepository _productRepo){
+        public static ReviewDto ToReviewDto(this Review reviewModel, IAccountRepository _userRepo){
             var username = _userRepo.GetUsername(reviewModel.UserId).Result;
-            var productName = _productRepo.GetProductName(reviewModel.ProductId).Result;
 
             return new ReviewDto {
                 Id = reviewModel.Id,
                 Rating = reviewModel.Rating,
                 Comment = reviewModel.Comment,
                 ReviewDate = reviewModel.ReviewDate,
+                UpdatedAt = reviewModel.UpdatedAt,
                 CreatedBy = username,
-                ProductName = productName,
-                Likes = reviewModel.Likes.IsNullOrEmpty() ? [] : reviewModel.Likes.Select(l => l.ToLikeDto(_userRepo)).ToList(),
+                LikeCount = reviewModel.Likes.IsNullOrEmpty() ? 0 : reviewModel.Likes.Count,
             };
         }
 
@@ -32,6 +31,7 @@ namespace eCommerceApi.Mappers
                 Rating = reviewDto.Rating,
                 Comment = reviewDto.Comment,
                 ReviewDate = DateTime.Now,
+                UpdatedAt = DateTime.Now,
                 ProductId = productId,
             };
         }
@@ -40,6 +40,7 @@ namespace eCommerceApi.Mappers
             return new Review {
                 Rating = reviewDto.Rating,
                 Comment = reviewDto.Comment,
+                UpdatedAt = DateTime.Now,
             };
         }
     }

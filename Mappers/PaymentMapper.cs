@@ -15,6 +15,9 @@ namespace eCommerceApi.Mappers
                 PaymentMethod = paymentModel.PaymentMethod,
                 PaymentDate = paymentModel.PaymentDate,
                 Amount = paymentModel.Amount,
+                Status = paymentModel.Status,
+                CreatedAt = paymentModel.CreatedAt,
+                UpdatedAt = paymentModel.UpdatedAt,
                 OrderId = paymentModel.OrderId,
             };
         }
@@ -24,6 +27,8 @@ namespace eCommerceApi.Mappers
                 PaymentMethod = paymentDto.PaymentMethod,
                 PaymentDate = DateTime.Now,
                 Amount = paymentDto.Amount,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
                 OrderId = orderId,
             };
         }

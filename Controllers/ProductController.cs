@@ -7,6 +7,7 @@ using eCommerceApi.Dtos.Product;
 using eCommerceApi.Helpers;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -58,6 +59,7 @@ namespace eCommerceApi.Controllers
         }
 
         [HttpPost("{vendorId:int}")]
+        [Authorize(Roles = "Vendor")]
         public async Task<IActionResult> Create(int vendorId, [FromBody] CreateProductDto productDto){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
@@ -85,6 +87,7 @@ namespace eCommerceApi.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Vendor")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto updateDto){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
@@ -100,6 +103,7 @@ namespace eCommerceApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Vendor, Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);

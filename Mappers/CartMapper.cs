@@ -15,7 +15,8 @@ namespace eCommerceApi.Mappers
 
             return new CartDto {
                 Id = cartModel.Id,
-                CreateDate = cartModel.CreateDate,
+                CreateAt = cartModel.CreateAt,
+                UpdateAt = cartModel.UpdateAt,
                 CreatedBy = username,
             };
         }

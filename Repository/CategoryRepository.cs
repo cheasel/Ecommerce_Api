@@ -72,6 +72,7 @@ namespace eCommerceApi.Repository
             }
 
             existCategory.Name = categoryDto.Name;
+            existCategory.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

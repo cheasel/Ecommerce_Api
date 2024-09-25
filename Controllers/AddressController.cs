@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using eCommerceApi.Data;
 using eCommerceApi.Dtos.Address;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
-using eCommerceApi.Migrations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceApi.Controllers

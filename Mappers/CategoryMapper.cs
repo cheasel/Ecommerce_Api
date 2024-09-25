@@ -15,6 +15,8 @@ namespace eCommerceApi.Mappers
             return new CategoryDto {
                 Id = categoryModel.Id,
                 Name = categoryModel.Name,
+                CreatedAt = categoryModel.CreatedAt,
+                UpdatedAt = categoryModel.UpdatedAt,
                 Products = categoryModel.Products.IsNullOrEmpty() ? [] : categoryModel.Products.Select(p => p.ToProductFromCategory()).ToList(),
             };
         }
@@ -22,6 +24,8 @@ namespace eCommerceApi.Mappers
         public static Category ToCategoryFromCreateDto(this CreateCategoryDto categoryDto){
             return new Category {
                 Name = categoryDto.Name,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
             };
         }
     }

@@ -63,6 +63,7 @@ namespace eCommerceApi.Repository
 
             existingPayment.PaymentMethod = paymentDto.PaymentMethod;
             existingPayment.Amount = paymentDto.Amount;
+            existingPayment.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

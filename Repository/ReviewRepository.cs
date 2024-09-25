@@ -62,6 +62,7 @@ namespace eCommerceApi.Repository
 
             existingReview.Rating = reviewModel.Rating;
             existingReview.Comment = reviewModel.Comment;
+            existingReview.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

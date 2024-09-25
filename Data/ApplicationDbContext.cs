@@ -38,33 +38,33 @@ namespace eCommerceApi.Data
                 .HasMany(u => u.Addresses)
                 .WithOne(a => a.User)
                 .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<User>()
                 .HasMany(u => u.Orders)
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             
             builder.Entity<User>()
                 .HasMany(u => u.ShoppingCarts)
                 .WithOne(s => s.User)
                 .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // User one to one Relation
             builder.Entity<User>()
                 .HasOne(u => u.Vendor)
                 .WithOne(v => v.User)
                 .HasForeignKey<Vendor>(v => v.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Vendor one to many Relation
             builder.Entity<Vendor>()
                 .HasMany(v => v.Products)
                 .WithOne(p => p.Vendor)
                 .HasForeignKey(p => p.VendorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             
             // Category one to many Relation
             builder.Entity<Category>()
@@ -78,23 +78,25 @@ namespace eCommerceApi.Data
                 .HasMany(o => o.Payments)
                 .WithOne(p  => p.Order)
                 .HasForeignKey(p => p.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // OrderItem many to many Relation
             builder.Entity<OrderItem>()
-                .HasKey(oi => new { oi.OrderId, oi.ProductId});
+                .HasKey(oi => new { 
+                    oi.OrderId, oi.ProductId
+                });
             
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
             
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Product)
                 .WithMany(p => p.OrderItems)
                 .HasForeignKey(oi => oi.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // CartItem many to many Relation
             builder.Entity<CartItem>()
@@ -104,13 +106,13 @@ namespace eCommerceApi.Data
                 .HasOne(ci => ci.ShoppingCart)
                 .WithMany(c => c.CartItems)
                 .HasForeignKey(ci => ci.CartId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
             
             builder.Entity<CartItem>()
                 .HasOne(ci => ci.Product)
                 .WithMany(p => p.CartItems)
                 .HasForeignKey(ci => ci.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Review many to many Relation
             builder.Entity<Review>()
@@ -120,17 +122,15 @@ namespace eCommerceApi.Data
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reviews)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
             
             builder.Entity<Review>()
                 .HasOne(r => r.Product)
                 .WithMany(p => p.Reviews)
                 .HasForeignKey(r => r.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Like many to many Relation
-            //builder.Entity<Like>()
-            //    .HasKey(l => new { l.UserId, l.ProductId, l.ReviewId });
             builder.Entity<Like>()
                 .HasKey(l => l.Id);
 

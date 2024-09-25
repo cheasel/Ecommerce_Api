@@ -41,7 +41,7 @@ namespace eCommerceApi.Controllers
 
             var reviews = await _reviewRepo.GetAllAsync();
 
-            var reviewDto = reviews.Select(r => r.ToReviewDto(_userRepo, _productRepo)).ToList();
+            var reviewDto = reviews.Select(r => r.ToReviewDto(_userRepo)).ToList();
 
             return Ok(reviewDto);
         }
@@ -58,7 +58,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(review.ToReviewDto(_userRepo, _productRepo));
+            return Ok(review.ToReviewDto(_userRepo));
         }
 
         [HttpPost("{productId:int}")]
@@ -82,7 +82,7 @@ namespace eCommerceApi.Controllers
 
             return CreatedAtAction(nameof(GetById), new {
                 id = reviewModel.Id
-            }, reviewModel.ToReviewDto(_userRepo, _productRepo));
+            }, reviewModel.ToReviewDto(_userRepo));
         }
 
         [HttpPut("{id:int}")]
@@ -105,7 +105,7 @@ namespace eCommerceApi.Controllers
                 return NotFound("Review not found");
             }
 
-            return Ok(review.ToReviewDto(_userRepo, _productRepo));
+            return Ok(review.ToReviewDto(_userRepo));
         }
 
         [HttpDelete("{id:int}")]
