@@ -6,14 +6,16 @@ using eCommerceApi.Data;
 using eCommerceApi.Dtos.Review;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace eCommerceApi.Mappers
 {
     public static class ReviewMapper
     {
-        public static ReviewDto ToReviewDto(this Review reviewModel, IAccountRepository _userRepo){
-            var username = _userRepo.GetUsername(reviewModel.UserId).Result;
+        public static async Task<ReviewDto> ToReviewDto(this Review reviewModel, UserManager<User> _userManager){
+            //var username = _userRepo.GetUsername(reviewModel.UserId).Result;
+            var user = await _userManager.FindByIdAsync(reviewModel.UserId.ToString());
 
             return new ReviewDto {
                 Id = reviewModel.Id,
@@ -21,7 +23,7 @@ namespace eCommerceApi.Mappers
                 Comment = reviewModel.Comment,
                 ReviewDate = reviewModel.ReviewDate,
                 UpdatedAt = reviewModel.UpdatedAt,
-                CreatedBy = username,
+                CreatedBy = user == null ? "" : user.UserName,
                 LikeCount = reviewModel.Likes.IsNullOrEmpty() ? 0 : reviewModel.Likes.Count,
             };
         }

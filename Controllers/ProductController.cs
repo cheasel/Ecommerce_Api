@@ -7,7 +7,9 @@ using eCommerceApi.Dtos.Product;
 using eCommerceApi.Helpers;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
+using eCommerceApi.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,14 +22,14 @@ namespace eCommerceApi.Controllers
         private readonly IProductRepository _productRepo;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IVendorRepository _vendorRepo;
-        private readonly IAccountRepository _userRepo;
+        private readonly UserManager<User> _userManager;
 
-        public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, IVendorRepository vendorRepo, IAccountRepository userRepo)
+        public ProductController(IProductRepository productRepo, ICategoryRepository categoryRepo, IVendorRepository vendorRepo, UserManager<User> userManager)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _vendorRepo = vendorRepo;
-            _userRepo = userRepo;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -55,7 +57,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(product.ToFullProductDto(_categoryRepo, _userRepo));
+            return Ok(product.ToFullProductDto(_categoryRepo, _userManager));
         }
 
         [HttpPost("{vendorId:int}")]
@@ -83,7 +85,7 @@ namespace eCommerceApi.Controllers
 
             return CreatedAtAction(nameof(GetById), new {
                 id = productModel.Id
-            }, productModel.ToFullProductDto(_categoryRepo, _userRepo));
+            }, productModel.ToFullProductDto(_categoryRepo, _userManager));
         }
 
         [HttpPut("{id:int}")]

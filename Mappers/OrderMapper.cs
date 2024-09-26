@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using eCommerceApi.Dtos.Order;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace eCommerceApi.Mappers
 {
     public static class OrderMapper
     {
-        public static OrderDto ToOrderDto(this Order orderModel, IAccountRepository _userRepo){
-            var username = _userRepo.GetUsername(orderModel.UserId).Result;
+        public static async Task<OrderDto> ToOrderDto(this Order orderModel, UserManager<User> _userManager){
+            var user = await _userManager.FindByIdAsync(orderModel.UserId.ToString());
 
             return new OrderDto {
                 Id = orderModel.Id,
@@ -21,7 +22,7 @@ namespace eCommerceApi.Mappers
                 ShoppingAddress = orderModel.ShoppingAddress,
                 CreatedAt = orderModel.CreatedAt,
                 UpdatedAt = orderModel.UpdatedAt,
-                CreatedBy = username,
+                CreatedBy = user == null ? "" : user.UserName,
                 //Payments = orderModel.Payments.Select(p => p.ToPaymentDto()).ToList(),
                 //OrderItems = orderModel.OrderItems.Select(o => o.ToOrderItemDto())
             };

@@ -5,19 +5,22 @@ using System.Threading.Tasks;
 using eCommerceApi.Dtos.Cart;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace eCommerceApi.Mappers
 {
     public static class CartMapper
     {
-        public static CartDto ToCartDto(this ShoppingCart cartModel, IAccountRepository _userRepo){
-            var username = _userRepo.GetUsername(cartModel.UserId).Result;
+        public static async Task<CartDto> ToCartDto(this ShoppingCart cartModel, UserManager<User> _userManager)
+        {
+            var user = await _userManager.FindByIdAsync(cartModel.UserId.ToString());
 
-            return new CartDto {
+            return new CartDto
+            {
                 Id = cartModel.Id,
                 CreatedAt = cartModel.CreatedAt,
                 UpdatedAt = cartModel.UpdatedAt,
-                CreatedBy = username,
+                CreatedBy = user == null ? "" : user.UserName,
             };
         }
     }

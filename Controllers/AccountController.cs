@@ -56,7 +56,7 @@ namespace eCommerceApi.Controllers
             var userDtos = new List<UserDto>();
             foreach (var user in users)
             {
-                userDtos.Add(await user.ToUserDto(_userManager, _accountRepo, _productRepo));
+                userDtos.Add(await user.ToUserDto(_userManager));
             }
 
             return Ok(userDtos);

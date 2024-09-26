@@ -12,7 +12,7 @@ namespace eCommerceApi.Mappers
 {
     public static class UserMappers
     {   
-        public static async Task<UserDto> ToUserDto(this User userModel, UserManager<User> _userManager, IAccountRepository _userRepo, IProductRepository _productRepo){
+        public static async Task<UserDto> ToUserDto(this User userModel, UserManager<User> _userManager){
             var roles = await _userManager.GetRolesAsync(userModel);
 
             return new UserDto{
@@ -24,11 +24,11 @@ namespace eCommerceApi.Mappers
                 LastName = userModel.LastName,
                 DateOfBirth = userModel.DateOfBirth,
                 ProfilePictureUrl = userModel.ProfilePictureUrl,
-                Carts = userModel.ShoppingCarts.Select(s => s.ToCartDto(_userRepo)).ToList(),
+                Carts = userModel.ShoppingCarts.Select(s => s.ToCartDto(_userManager).Result).ToList(),
                 Addresses = userModel.Addresses.Select(a => a.ToAddressDto()).ToList(),
-                Orders = userModel.Orders.Select(o => o.ToOrderDto(_userRepo)).ToList(),
-                Reviews = userModel.Reviews.Select(r => r.ToReviewDto(_userRepo)).ToList(),
-                Likes = userModel.Likes.Select(l => l.ToLikeDto(_userRepo)).ToList(),
+                Orders = userModel.Orders.Select(o => o.ToOrderDto(_userManager).Result).ToList(),
+                Reviews = userModel.Reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList(),
+                Likes = userModel.Likes.Select(l => l.ToLikeDto(_userManager).Result).ToList(),
             };
         }
     }

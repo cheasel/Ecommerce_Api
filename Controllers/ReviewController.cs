@@ -19,15 +19,13 @@ namespace eCommerceApi.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly IReviewRepository _reviewRepo;
-        private readonly IAccountRepository _userRepo;
         private readonly IProductRepository _productRepo;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public ReviewController(IReviewRepository reviewRepo, IAccountRepository userRepo, IProductRepository productRepo, UserManager<User> userManager, ApplicationDbContext context)
+        public ReviewController(IReviewRepository reviewRepo, IProductRepository productRepo, UserManager<User> userManager, ApplicationDbContext context)
         {
             _reviewRepo = reviewRepo;
-            _userRepo = userRepo;
             _productRepo = productRepo;
             _userManager = userManager;
             _context = context;
@@ -41,7 +39,7 @@ namespace eCommerceApi.Controllers
 
             var reviews = await _reviewRepo.GetAllAsync();
 
-            var reviewDto = reviews.Select(r => r.ToReviewDto(_userRepo)).ToList();
+            var reviewDto = reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList();
 
             return Ok(reviewDto);
         }
@@ -58,7 +56,7 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(review.ToReviewDto(_userRepo));
+            return Ok(review.ToReviewDto(_userManager).Result);
         }
 
         [HttpPost("{productId:int}")]
@@ -82,7 +80,7 @@ namespace eCommerceApi.Controllers
 
             return CreatedAtAction(nameof(GetById), new {
                 id = reviewModel.Id
-            }, reviewModel.ToReviewDto(_userRepo));
+            }, reviewModel.ToReviewDto(_userManager).Result);
         }
 
         [HttpPut("{id:int}")]
@@ -105,7 +103,7 @@ namespace eCommerceApi.Controllers
                 return NotFound("Review not found");
             }
 
-            return Ok(review.ToReviewDto(_userRepo));
+            return Ok(review.ToReviewDto(_userManager).Result);
         }
 
         [HttpDelete("{id:int}")]
