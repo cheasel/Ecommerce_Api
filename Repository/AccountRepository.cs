@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eCommerceApi.Data;
+using eCommerceApi.Dtos.Account;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
 using Microsoft.AspNetCore.Identity;
@@ -13,12 +14,10 @@ namespace eCommerceApi.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly UserManager<User> _userManager;
-        //private readonly ApplicationDbContext _context;
 
         public AccountRepository(UserManager<User> userManager)
         {
             _userManager = userManager;
-            //_context = context;
         }
 
         public async Task<List<User>> GetAllAsync()
@@ -32,6 +31,16 @@ namespace eCommerceApi.Repository
                         .AsQueryable();
 
             return await users.ToListAsync();
+        }
+
+        public async Task<User> GetLikeAsync(int id)
+        {
+            return await _userManager.Users
+                        .Include(u => u.Likes)
+                            .ThenInclude(l => l.Product)
+                        .Include(u => u.Likes)
+                            .ThenInclude(l => l.Review)
+                        .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

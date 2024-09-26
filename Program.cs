@@ -116,6 +116,7 @@ builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 
 var app = builder.Build();
 

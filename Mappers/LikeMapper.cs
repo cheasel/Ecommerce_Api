@@ -21,5 +21,12 @@ namespace eCommerceApi.Mappers
                 LikedBy = user == null ? "" : user.UserName,
             };
         }
+
+        public static Like ToLikeFromCreateDto(this CreateLikeDto likeDto){
+            return new Like {
+                LikeDate = DateTime.Now,
+                LikeType = likeDto.LikeType,
+            };
+        }
     }
 }

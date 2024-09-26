@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eCommerceApi.Dtos.Cart;
 using eCommerceApi.Dtos.Like;
 using eCommerceApi.Dtos.Order;
+using eCommerceApi.Dtos.OrderItem;
 using eCommerceApi.Dtos.Review;
 
 namespace eCommerceApi.Dtos.Product
@@ -26,7 +27,7 @@ namespace eCommerceApi.Dtos.Product
         public int reviewCount { get; set; }
         public int likeCount { get; set; }
         
-        public List<OrderDto> Orders { get; set; }
+        public List<ProductOrderItemDto> Orders { get; set; }
         //public List<CartDto> Carts { get; set; }
         public List<ReviewDto> Reviews { get; set; }
         public List<LikeDto> Likes { get; set; }

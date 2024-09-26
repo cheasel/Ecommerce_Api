@@ -13,5 +13,6 @@ namespace eCommerceApi.Interfaces
         Task<Review> CreateAsync(Review reviewModel);
         Task<Review?> UpdateAsync(int id, Review reviewModel);
         Task<Review?> DeleteAsync(int id);
+        Task<bool> ReviewExists(int id);
     }
 }

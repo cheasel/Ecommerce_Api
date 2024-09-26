@@ -31,12 +31,12 @@ namespace eCommerceApi.Repository
         public async Task<List<Product>> GetAllAsync(QueryObject query)
         {
             var products = _context.Products
-            .Include(oi => oi.OrderItems)
-                .ThenInclude(o => o.Order)
-            .Include(ci => ci.CartItems)
-                .ThenInclude(c => c.ShoppingCart)
-            .Include(r => r.Reviews)
-            .Include(l => l.Likes)
+            .Include(p => p.OrderItems)
+                .ThenInclude(oi => oi.Order)
+            .Include(p => p.CartItems)
+                .ThenInclude(ci => ci.ShoppingCart)
+            .Include(p => p.Reviews)
+            .Include(p => p.Likes)
             .AsQueryable();
 
             // For Filter
@@ -64,12 +64,12 @@ namespace eCommerceApi.Repository
         public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products
-            .Include(o => o.OrderItems)
-                .ThenInclude(o => o.Order)
-            .Include(c => c.CartItems)
+            .Include(p => p.OrderItems)
+                .ThenInclude(oi => oi.Order)
+            .Include(p => p.CartItems)
                 .ThenInclude(c => c.ShoppingCart)
-            .Include(r => r.Reviews)
-            .Include(l => l.Likes)
+            .Include(p => p.Reviews)
+            .Include(p => p.Likes)
             .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -110,9 +110,9 @@ namespace eCommerceApi.Repository
             return await _context.Products.Where(p => p.Id == id).Select(p => p.Name).FirstOrDefaultAsync();
         }
 
-        public Task<bool> ProductExists(int id)
+        public async Task<bool> ProductExists(int id)
         {
-            return _context.Products.AnyAsync(p => p.Id == id);
+            return await _context.Products.AnyAsync(p => p.Id == id);
         }
     }
 }

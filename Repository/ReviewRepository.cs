@@ -52,6 +52,11 @@ namespace eCommerceApi.Repository
             return await _context.Reviews.Include(r => r.Likes).FirstOrDefaultAsync(r => r.Id == id);
         }
 
+        public async Task<bool> ReviewExists(int id)
+        {
+            return await _context.Reviews.AnyAsync(r => r.Id == id);
+        }
+
         public async Task<Review?> UpdateAsync(int id, Review reviewModel)
         {
             var existingReview = await _context.Reviews.FindAsync(id);

@@ -52,7 +52,8 @@ namespace eCommerceApi.Mappers
                 reviewCount = productModel.Reviews.Count,
                 likeCount = productModel.Likes.Count,
                 //VendorName = username,
-                Orders = productModel.OrderItems.IsNullOrEmpty() ? [] : productModel.OrderItems.Select(o => o.Order.ToOrderDto(_userManager).Result).ToList(),
+                //Orders = productModel.OrderItems.IsNullOrEmpty() ? [] : productModel.OrderItems.Select(o => o.Order.ToOrderDto(_userManager).Result).ToList(),
+                Orders = productModel.OrderItems.Select(oi => oi.ProductToOrderItemDto()).ToList(),
                 Reviews = productModel.Reviews.IsNullOrEmpty() ? [] : productModel.Reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList(),
                 Likes = productModel.Likes.IsNullOrEmpty() ? [] : productModel.Likes.Select(l => l.ToLikeDto(_userManager).Result).ToList()
             };
@@ -90,7 +91,6 @@ namespace eCommerceApi.Mappers
                 Stock = productModel.Stock,
                 CategoryName = categoryName,
                 orderCount = productModel.OrderItems.Count,
-                cartCount = productModel.CartItems.Count,
                 reviewCount = productModel.Reviews.Count,
                 likeCount = productModel.Likes.Count,
             };

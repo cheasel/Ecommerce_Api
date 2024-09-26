@@ -17,7 +17,7 @@ namespace eCommerceApi.Dtos.Product
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int orderCount { get; set; }
-        public int cartCount { get; set; }
+        //public int cartCount { get; set; }
         public int reviewCount { get; set; }
         public int likeCount { get; set; }
     }
