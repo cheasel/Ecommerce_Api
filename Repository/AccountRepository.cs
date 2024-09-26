@@ -32,15 +32,5 @@ namespace eCommerceApi.Repository
 
             return await users.ToListAsync();
         }
-
-        public async Task<User> GetLikeAsync(int id)
-        {
-            return await _userManager.Users
-                        .Include(u => u.Likes)
-                            .ThenInclude(l => l.Product)
-                        .Include(u => u.Likes)
-                            .ThenInclude(l => l.Review)
-                        .FirstOrDefaultAsync(u => u.Id == id);
-        }
     }
 }

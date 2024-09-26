@@ -30,6 +30,27 @@ namespace eCommerceApi.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> GetLike(){
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var username = User.GetUsername();
+            var user = await _userManager.FindByNameAsync(username);
+
+            var userLike = await _likeRepo.GetLikeAsync(user.Id);
+
+            var userLikeDto = new UserLikeDto {
+                ProductLikes = userLike.Likes.Where(l => l.ProductId != null).Select(l => l.Product.Id).ToList(),
+                ReviewLikes = userLike.Likes.Where(l => l.ReviewId != null).Select(l => l.Review.Id).ToList(),
+            };
+
+            return Ok(userLikeDto);
+        }
+
         [HttpPost("{id:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Like([FromRoute] int id, [FromQuery] CreateLikeDto likeDto){

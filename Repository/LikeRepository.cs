@@ -6,6 +6,7 @@ using eCommerceApi.Data;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Mappers;
 using eCommerceApi.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace eCommerceApi.Repository
@@ -13,10 +14,12 @@ namespace eCommerceApi.Repository
     public class LikeRepository : ILikeRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public LikeRepository(ApplicationDbContext context)
+        public LikeRepository(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<Like> CreateAsync(Like likeModel)
@@ -40,6 +43,16 @@ namespace eCommerceApi.Repository
             await _context.SaveChangesAsync();
 
             return likeModel;
+        }
+
+        public async Task<User> GetLikeAsync(int id)
+        {
+            return await _userManager.Users
+                        .Include(u => u.Likes)
+                            .ThenInclude(l => l.Product)
+                        .Include(u => u.Likes)
+                            .ThenInclude(l => l.Review)
+                        .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<bool> LikeExists(int id, int userId, LikeType likeType)

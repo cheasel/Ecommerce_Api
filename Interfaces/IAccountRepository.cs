@@ -11,6 +11,5 @@ namespace eCommerceApi.Interfaces
     public interface IAccountRepository
     {
         Task<List<User>> GetAllAsync();
-        Task<User> GetLikeAsync(int id);
     }
 }
