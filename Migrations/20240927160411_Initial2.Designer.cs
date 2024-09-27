@@ -12,8 +12,8 @@ using eCommerceApi.Data;
 namespace eCommerceApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240925153538_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240927160411_Initial2")]
+    partial class Initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -457,7 +457,8 @@ namespace eCommerceApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -809,8 +810,8 @@ namespace eCommerceApi.Migrations
             modelBuilder.Entity("eCommerceApi.Model.ShoppingCart", b =>
                 {
                     b.HasOne("eCommerceApi.Model.User", "User")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("UserId")
+                        .WithOne("ShoppingCarts")
+                        .HasForeignKey("eCommerceApi.Model.ShoppingCart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -871,10 +872,10 @@ namespace eCommerceApi.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("ShoppingCarts");
-
-                    b.Navigation("Vendor")
+                    b.Navigation("ShoppingCarts")
                         .IsRequired();
+
+                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("eCommerceApi.Model.Vendor", b =>

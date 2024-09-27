@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eCommerceApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -549,7 +549,8 @@ namespace eCommerceApi.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_UserId",
                 table: "ShoppingCarts",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendors_UserId",

@@ -24,7 +24,7 @@ namespace eCommerceApi.Mappers
                 LastName = userModel.LastName,
                 DateOfBirth = userModel.DateOfBirth,
                 ProfilePictureUrl = userModel.ProfilePictureUrl,
-                Carts = userModel.ShoppingCarts.Select(s => s.ToCartDto(_userManager).Result).ToList(),
+                Carts = userModel.ShoppingCarts == null ? null : userModel.ShoppingCarts.ToCartDto(_userManager).Result,
                 Addresses = userModel.Addresses.Select(a => a.ToAddressDto()).ToList(),
                 Orders = userModel.Orders.Select(o => o.ToOrderDto(_userManager).Result).ToList(),
                 Reviews = userModel.Reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList(),

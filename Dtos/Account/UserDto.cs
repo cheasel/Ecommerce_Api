@@ -22,7 +22,7 @@ namespace eCommerceApi.Dtos.Account
         public DateTime? DateOfBirth { get; set; }
         public string? ProfilePictureUrl { get; set; }
         
-        public List<CartDto> Carts { get; set; }
+        public CartDto? Carts { get; set; }
         public List<AddressDto> Addresses { get; set; }
         public List<OrderDto> Orders { get; set; }
         public List<ReviewDto> Reviews { get; set; }

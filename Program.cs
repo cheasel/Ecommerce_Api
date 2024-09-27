@@ -117,6 +117,7 @@ builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
 var app = builder.Build();
 
@@ -125,6 +126,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -136,6 +138,15 @@ app.MapControllers();
 
 using(var scope = app.Services.CreateScope()){
     var services = scope.ServiceProvider;
+
+    try{
+        var context = services.GetRequiredService<ApplicationDbContext>();
+    }
+    catch(Exception ex){
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or creating the database.");
+    }
+
     await CreateRoles(services);
 }
 
