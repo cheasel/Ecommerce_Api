@@ -45,12 +45,6 @@ namespace eCommerceApi.Data
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
-            builder.Entity<User>()
-                .HasMany(u => u.ShoppingCarts)
-                .WithOne(s => s.User)
-                .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             // User one to one Relation
             builder.Entity<User>()
@@ -58,6 +52,11 @@ namespace eCommerceApi.Data
                 .WithOne(v => v.User)
                 .HasForeignKey<Vendor>(v => v.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>()
+                .HasOne(u => u.ShoppingCarts)
+                .WithOne(s => s.User)
+                .HasForeignKey<ShoppingCart>(s => s.UserId);
 
             // Vendor one to many Relation
             builder.Entity<Vendor>()

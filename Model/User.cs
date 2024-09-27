@@ -14,7 +14,7 @@ namespace eCommerceApi.Model
         public DateTime? DateOfBirth { get; set; }
         public string? ProfilePictureUrl { get; set; }
         
-        public ICollection<ShoppingCart> ShoppingCarts { get; set; }   
+        public ShoppingCart ShoppingCarts { get; set; }   
         public ICollection<Address> Addresses { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<Review> Reviews { get; set; }
