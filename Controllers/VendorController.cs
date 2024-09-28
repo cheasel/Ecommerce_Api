@@ -22,6 +22,7 @@ namespace eCommerceApi.Controllers
             _categoryRepo = categoryRepo;
         }
 
+        // Get all vendor [Admin only]
         [HttpGet]
         public async Task<IActionResult> GetAll(){
             if(!ModelState.IsValid){
@@ -35,6 +36,7 @@ namespace eCommerceApi.Controllers
             return Ok(vendorDto);
         }
 
+        // Get vendor by Id [Admin and Vendor]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
             if(!ModelState.IsValid){
@@ -50,6 +52,7 @@ namespace eCommerceApi.Controllers
             return Ok(vendor.ToFullVendorDto(_categoryRepo));
         }
 
+        // Update vendor [Admin and Vendor]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateVendorDto vendorDto){
             if(!ModelState.IsValid){
@@ -64,5 +67,7 @@ namespace eCommerceApi.Controllers
 
             return Ok(vendorModel.ToVendorDto());
         }
+
+        // Delete Vendor [Admin only]
     }
 }

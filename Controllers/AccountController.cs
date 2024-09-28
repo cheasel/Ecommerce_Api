@@ -41,6 +41,7 @@ namespace eCommerceApi.Controllers
             _context = context;
         }
 
+        // Get all users [Admin only]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
@@ -62,6 +63,13 @@ namespace eCommerceApi.Controllers
             return Ok(userDtos);
         }
 
+        // Get user by Id [Admin Only]
+
+
+        // Get user profile [Authorize]
+
+
+        // Login 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
@@ -96,6 +104,7 @@ namespace eCommerceApi.Controllers
             );
         }
 
+        // Register for Customer
         [HttpPost("register/user")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
@@ -145,6 +154,7 @@ namespace eCommerceApi.Controllers
             }
         }
 
+        // Register for Vendor
         [HttpPost("register/vendor")]
         public async Task<IActionResult> VendorRegister([FromBody] VendorRegisterDto registerDto)
         {
@@ -210,6 +220,7 @@ namespace eCommerceApi.Controllers
             }
         }
 
+        // Update user profile [Authorize]
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> Update(UpdateUserDto userDto){

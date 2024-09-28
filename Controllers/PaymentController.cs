@@ -20,6 +20,7 @@ namespace eCommerceApi.Controllers
             _paymentRepo = paymentRepo;
         }
 
+        // Get all payment [Admin only]
         [HttpGet]
         public async Task<IActionResult> GetAll(){
             if(!ModelState.IsValid){
@@ -33,6 +34,7 @@ namespace eCommerceApi.Controllers
             return Ok(paymentDto);
         }
 
+        // Get payment by Id [Admin only]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
             if(!ModelState.IsValid){
@@ -48,6 +50,7 @@ namespace eCommerceApi.Controllers
             return Ok(payment.ToPaymentDto());
         }
 
+        // Create payment [Customer only]
         [HttpPost("{orderId:int}")]
         public async Task<IActionResult> Create([FromRoute] int orderId, [FromBody] CreatePaymentDto paymentDto){
             if(!ModelState.IsValid){
@@ -62,6 +65,7 @@ namespace eCommerceApi.Controllers
             }, paymentModel.ToPaymentDto());
         }
 
+        // Update payment [Customer only]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePaymentDto updatDto){
             if(!ModelState.IsValid){
@@ -77,6 +81,7 @@ namespace eCommerceApi.Controllers
             return Ok(paymentModel.ToPaymentDto());
         }
 
+        // Delete payment [Customer only]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
             if(!ModelState.IsValid){

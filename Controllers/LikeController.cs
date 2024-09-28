@@ -30,6 +30,7 @@ namespace eCommerceApi.Controllers
             _userManager = userManager;
         }
 
+        // Get user likes [Customer only]
         [HttpGet]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetLike(){
@@ -51,6 +52,7 @@ namespace eCommerceApi.Controllers
             return Ok(userLikeDto);
         }
 
+        // like product and review by Id [Customer only]
         [HttpPost("{id:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Like([FromRoute] int id, [FromQuery] CreateLikeDto likeDto){

@@ -31,6 +31,7 @@ namespace eCommerceApi.Controllers
             _context = context;
         }
 
+        // Get all reviews 
         [HttpGet]
         public async Task<IActionResult> GetAll(){
             if(!ModelState.IsValid){
@@ -44,6 +45,7 @@ namespace eCommerceApi.Controllers
             return Ok(reviewDto);
         }
 
+        // Get review by id 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
             if(!ModelState.IsValid){
@@ -59,6 +61,7 @@ namespace eCommerceApi.Controllers
             return Ok(review.ToReviewDto(_userManager).Result);
         }
 
+        // Create review [Customer only]
         [HttpPost("{productId:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromRoute] int productId, [FromBody] CreateReviewDto reviewDto){
@@ -83,6 +86,7 @@ namespace eCommerceApi.Controllers
             }, reviewModel.ToReviewDto(_userManager).Result);
         }
 
+        // Update review [Customer only]
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateReviewDto reviewDto){
@@ -106,6 +110,7 @@ namespace eCommerceApi.Controllers
             return Ok(review.ToReviewDto(_userManager).Result);
         }
 
+        // Delete review [Admin and Customer]
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Customer, Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id){

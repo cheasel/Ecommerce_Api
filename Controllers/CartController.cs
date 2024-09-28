@@ -34,6 +34,7 @@ namespace eCommerceApi.Controllers
             _userManager = userManager;
         }
 
+        // Get user cart [Customer only]
         [HttpGet]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetCart(){
@@ -63,6 +64,7 @@ namespace eCommerceApi.Controllers
             return Ok(await usercart.ToCartDetailDto());
         }
 
+        // Add item to cart [Customer only]
         [HttpPost("add-to-cart/{itemid:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> AddToCart([FromRoute] int itemid, [FromBody] AddToCartDto cartItemDto){
@@ -100,6 +102,7 @@ namespace eCommerceApi.Controllers
             if(existingCartItem != null){
                 existingCartItem.Quantity = cartItemDto.Quantity;
                 existingCartItem.UpdatedAt = DateTime.Now;
+                usercart.UpdatedAt = DateTime.Now;
             }else{
                 var cartItem = new CartItem {
                     ProductId = Product.Id,
@@ -119,6 +122,7 @@ namespace eCommerceApi.Controllers
             }, await usercart.ToCartDetailDto());
         }
 
+        // Remove item from cart [Customer only]
         [HttpPost("remove-from-cart/{itemid:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> RemoveFromCart([FromRoute] int itemid){

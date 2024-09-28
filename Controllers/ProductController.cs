@@ -32,6 +32,7 @@ namespace eCommerceApi.Controllers
             _userManager = userManager;
         }
 
+        // Get all products
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query){
             if(!ModelState.IsValid){
@@ -45,6 +46,7 @@ namespace eCommerceApi.Controllers
             return Ok(productDto);
         }
 
+        // Get product by Id 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
             if(!ModelState.IsValid){
@@ -60,6 +62,7 @@ namespace eCommerceApi.Controllers
             return Ok(product.ToFullProductDto(_categoryRepo, _userManager));
         }
 
+        // Create product [Vendor only]
         [HttpPost("{vendorId:int}")]
         [Authorize(Roles = "Vendor")]
         public async Task<IActionResult> Create(int vendorId, [FromBody] CreateProductDto productDto){
@@ -88,6 +91,7 @@ namespace eCommerceApi.Controllers
             }, productModel.ToFullProductDto(_categoryRepo, _userManager));
         }
 
+        // Update product [Vendor only]
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Vendor")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto updateDto){
@@ -104,8 +108,9 @@ namespace eCommerceApi.Controllers
             return Ok(productModel.ToProductDto(_categoryRepo));
         }
 
+        // Delete product [Admin only]
         [HttpDelete("{id:int}")]
-        [Authorize(Roles = "Vendor, Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);

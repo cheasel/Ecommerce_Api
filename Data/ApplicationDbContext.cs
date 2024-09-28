@@ -73,11 +73,11 @@ namespace eCommerceApi.Data
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Order one to many Relation
+            // Order one to one Relation
             builder.Entity<Order>()
-                .HasMany(o => o.Payments)
+                .HasOne(o => o.Payments)
                 .WithOne(p  => p.Order)
-                .HasForeignKey(p => p.OrderId)
+                .HasForeignKey<Payment>(p => p.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // OrderItem many to many Relation

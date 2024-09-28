@@ -31,6 +31,7 @@ namespace eCommerceApi.Controllers
             _orderRepo = orderRepo;
         }
 
+        // Get user orders [Customer only]
         [HttpGet("user")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetAllUserOrder(){
@@ -52,6 +53,31 @@ namespace eCommerceApi.Controllers
             return Ok(orderDto);
         }
 
+        // Get user order by Id [Customer only]
+        [HttpGet("{orderId:int}")]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> GetUserOrder([FromRoute] int orderId){
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            var username = User.GetUsername();
+            var user = await _userManager.FindByNameAsync(username);
+
+            if(user == null){
+                return NotFound("User not found.");
+            }
+
+            var order = await _orderRepo.GetUserOrderAsync(orderId, user.Id);
+
+            if(order == null){
+                return NotFound("Order not found or Not your order");
+            }
+
+            return Ok(order.ToFullOrderDto(username));
+        }
+
+        // Place order [Customer only]
         [HttpPost("place-order")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderDto orderDto){
@@ -111,6 +137,7 @@ namespace eCommerceApi.Controllers
             return Ok("Order placed successfully");
         }
 
+        // Cancel order [Customer only]
         [HttpPost("cancel-order/{orderId:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> CancelOrder(int orderId){

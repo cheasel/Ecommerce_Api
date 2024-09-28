@@ -9,5 +9,6 @@ namespace eCommerceApi.Interfaces
     public interface IOrderRepository
     {
         Task<List<Order>> GetAllUserOrderAsync(int id);
+        Task<Order> GetUserOrderAsync(int orderId, int userId);
     }
 }

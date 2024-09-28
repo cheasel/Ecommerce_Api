@@ -348,7 +348,8 @@ namespace eCommerceApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -758,8 +759,8 @@ namespace eCommerceApi.Migrations
             modelBuilder.Entity("eCommerceApi.Model.Payment", b =>
                 {
                     b.HasOne("eCommerceApi.Model.Order", "Order")
-                        .WithMany("Payments")
-                        .HasForeignKey("OrderId")
+                        .WithOne("Payments")
+                        .HasForeignKey("eCommerceApi.Model.Payment", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -835,7 +836,8 @@ namespace eCommerceApi.Migrations
                 {
                     b.Navigation("OrderItems");
 
-                    b.Navigation("Payments");
+                    b.Navigation("Payments")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("eCommerceApi.Model.Product", b =>

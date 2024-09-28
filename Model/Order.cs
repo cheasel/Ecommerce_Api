@@ -24,7 +24,7 @@ namespace eCommerceApi.Model
         public User User { get; set; }
 
         // Navigation property for one to many
-        public ICollection<Payment> Payments { get; set; }
+        public Payment Payments { get; set; }
 
         // Navigation property for many to many
         public ICollection<OrderItem> OrderItems { get; set; }

@@ -19,6 +19,7 @@ namespace eCommerceApi.Controllers
             _addressRepo = addressRepo;
         }
 
+        // Get all addresses [Admin only]
         [HttpGet]
         public async Task<IActionResult> GetAll(){
             if(!ModelState.IsValid){
@@ -32,6 +33,7 @@ namespace eCommerceApi.Controllers
             return Ok(AddressDto);
         }
 
+        // Get address by Id [Admin only]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
             if(!ModelState.IsValid){
@@ -47,6 +49,7 @@ namespace eCommerceApi.Controllers
             return Ok(address.ToAddressDto());
         }
 
+        // Create address [Authorize]
         [HttpPost("{userId:int}")]
         public async Task<IActionResult> Create([FromRoute] int userId, [FromBody] CreateAddressDto addressDto){
             if(!ModelState.IsValid){
@@ -61,6 +64,7 @@ namespace eCommerceApi.Controllers
             }, addressModel.ToAddressDto());
         }
 
+        // Update address [Authorize]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAddressDto updateDto){
             if(!ModelState.IsValid){
@@ -76,6 +80,7 @@ namespace eCommerceApi.Controllers
             return Ok(addressModel.ToAddressDto());
         }
 
+        // Delete address [Authorize]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
             if(!ModelState.IsValid){

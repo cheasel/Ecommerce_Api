@@ -19,5 +19,13 @@ namespace eCommerceApi.Mappers
                 UpdatedAt = orderItemModel.UpdatedAt,
             };
         }
+
+        public static OrderItemDto ToOrderItemDto(this OrderItem orderItemModel){
+            return new OrderItemDto {
+                ProductId = orderItemModel.ProductId,
+                UnitPrice = orderItemModel.Product.Price,
+                Quantity = orderItemModel.Quantity,
+            };
+        }
     }
 }

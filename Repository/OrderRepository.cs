@@ -32,5 +32,14 @@ namespace eCommerceApi.Repository
 
             return await orders.ToListAsync();
         }
+
+        public async Task<Order> GetUserOrderAsync(int orderId, int userId)
+        {
+            return await _context.Orders
+                        .Include(o => o.OrderItems)
+                            .ThenInclude(oi => oi.Product)
+                        .Include(o => o.Payments)
+                        .FirstOrDefaultAsync(o => o.UserId == userId && o.Id == orderId);
+        }
     }
 }

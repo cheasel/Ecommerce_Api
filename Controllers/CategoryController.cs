@@ -20,6 +20,7 @@ namespace eCommerceApi.Controllers
             _categoryRepo = categoryRepo;
         }
 
+        // Get all categories
         [HttpGet]
         public async Task<IActionResult> GetAll(){
             if(!ModelState.IsValid){
@@ -33,6 +34,7 @@ namespace eCommerceApi.Controllers
             return Ok(categoryDto);
         }
 
+        // Get categry by Id
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
             if(!ModelState.IsValid){
@@ -48,6 +50,7 @@ namespace eCommerceApi.Controllers
             return Ok(category.ToFullCategoryDto());
         }
 
+        // Create category [Admin only]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto categoryDto){
             if(!ModelState.IsValid){
@@ -62,6 +65,7 @@ namespace eCommerceApi.Controllers
             }, categoryModel.ToCategoryDto());
         }
 
+        // Update category [Admin Only]
         [HttpPut]
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryDto updateDto){
@@ -78,6 +82,7 @@ namespace eCommerceApi.Controllers
             return Ok(categoryModel.ToCategoryDto());
         }
 
+        // Delete category [Admin only]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
             if(!ModelState.IsValid){
