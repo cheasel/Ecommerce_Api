@@ -118,6 +118,7 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 var app = builder.Build();
 

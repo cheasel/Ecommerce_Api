@@ -43,20 +43,12 @@ namespace eCommerceApi.Controllers
 
             var username = User.GetUsername();
             var user = await _userManager.FindByNameAsync(username);
-            //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if(user == null){
                 return NotFound("User not found.");
             }
 
             var usercart = await _cartRepo.GetCartAsync(user.Id);
-
-            Console.WriteLine("===============");
-            Console.WriteLine(usercart);
-            Console.WriteLine(usercart.Id);
-            Console.WriteLine(usercart.CartItems.Select(ci => ci.Quantity).ToList());
-            Console.WriteLine(usercart.CartItems.Select(ci => ci.Product.Price).ToList());
-            Console.WriteLine("===============");
 
             if(usercart == null){
                 usercart = new ShoppingCart {
@@ -68,15 +60,7 @@ namespace eCommerceApi.Controllers
                 _context.ShoppingCarts.Add(usercart);
             }
 
-            var cartDto = new CartDetailDto {
-                Id = usercart.Id,
-                CreatedAt = usercart.CreatedAt,
-                UpdatedAt = usercart.UpdatedAt,
-                CartItems = usercart.CartItems.Select(ci => ci.ToCartItemDto()).ToList(),
-                TotalPrice = usercart.CartItems.Sum(ci => ci.Quantity * ci.Product.Price),
-            };
-
-            return Ok(cartDto);
+            return Ok(await usercart.ToCartDetailDto());
         }
 
         [HttpPost("add-to-cart/{itemid:int}")]
@@ -88,7 +72,10 @@ namespace eCommerceApi.Controllers
 
             var username = User.GetUsername();
             var user = await _userManager.FindByNameAsync(username);
-            //var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if(user == null){
+                return NotFound("User not found.");
+            }
 
             var usercart = await _cartRepo.GetCartAsync(user.Id);
             
@@ -127,7 +114,9 @@ namespace eCommerceApi.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Product added to cart");
+            return CreatedAtAction(nameof(GetCart), new {
+
+            }, await usercart.ToCartDetailDto());
         }
 
         [HttpPost("remove-from-cart/{itemid:int}")]

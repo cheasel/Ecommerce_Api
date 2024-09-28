@@ -27,9 +27,7 @@ namespace eCommerceApi.Repository
         }
 
         public async Task<ShoppingCart?> GetCartAsync(int id)
-        {
-            //var cart = _userManager.Users.Select(u => u.ShoppingCarts).Where(s => s.UserId == id);
-            
+        {   
             return await _context.ShoppingCarts
                         .Include(sc => sc.CartItems)
                             .ThenInclude(ci => ci.Product)

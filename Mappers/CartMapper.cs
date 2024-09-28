@@ -23,5 +23,15 @@ namespace eCommerceApi.Mappers
                 CreatedBy = user == null ? "" : user.UserName,
             };
         }
+
+        public static async Task<CartDetailDto> ToCartDetailDto(this ShoppingCart cartModel){
+            return new CartDetailDto {
+                Id = cartModel.Id,
+                CreatedAt = cartModel.CreatedAt,
+                UpdatedAt = cartModel.UpdatedAt,
+                CartItems = cartModel.CartItems.Select(ci => ci.ToCartItemDto()).ToList(),
+                TotalPrice = cartModel.CartItems.Sum(ci => ci.Quantity * ci.Product.Price),
+            };
+        }
     }
 }
