@@ -7,6 +7,7 @@ using eCommerceApi.Dtos.Account;
 using eCommerceApi.Interfaces;
 using eCommerceApi.Model;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace eCommerceApi.Mappers
 {
@@ -17,8 +18,8 @@ namespace eCommerceApi.Mappers
 
             return new UserDto{
                 Id = userModel.Id,
-                Username = userModel.UserName,
-                Email = userModel.Email,
+                Username = userModel.UserName == null ? string.Empty : userModel.UserName,
+                Email = userModel.Email == null ? string.Empty : userModel.Email,
                 Role = roles.FirstOrDefault(),
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
@@ -29,6 +30,19 @@ namespace eCommerceApi.Mappers
                 Orders = userModel.Orders.Select(o => o.ToOrderDto(_userManager).Result).ToList(),
                 Reviews = userModel.Reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList(),
                 Likes = userModel.Likes.Select(l => l.ToLikeDto(_userManager).Result).ToList(),
+            };
+        }
+
+        public static ProfileDto ToProfileDto(this User userModel, List<string> role){
+            return new ProfileDto {
+                Id = userModel.Id,
+                Username = userModel.UserName == null ? string.Empty : userModel.UserName,
+                Email = userModel.Email == null ? string.Empty : userModel.Email,
+                Role = role.ToString(),
+                FirstName = userModel.FirstName,
+                LastName = userModel.LastName,
+                DateOfBirth = userModel.DateOfBirth,
+                ProfilePictureUrl = userModel.ProfilePictureUrl,
             };
         }
     }

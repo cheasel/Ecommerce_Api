@@ -32,5 +32,16 @@ namespace eCommerceApi.Repository
 
             return await users.ToListAsync();
         }
+
+        public Task<User> GetByIdAsync(int id)
+        {
+            return _userManager.Users
+                            .Include(u => u.ShoppingCarts)
+                            .Include(u => u.Addresses)
+                            .Include(u => u.Orders)
+                            .Include(u => u.Reviews)
+                            .Include(u => u.Likes)
+                            .FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

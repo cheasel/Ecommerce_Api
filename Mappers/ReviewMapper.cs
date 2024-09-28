@@ -14,7 +14,6 @@ namespace eCommerceApi.Mappers
     public static class ReviewMapper
     {
         public static async Task<ReviewDto> ToReviewDto(this Review reviewModel, UserManager<User> _userManager){
-            //var username = _userRepo.GetUsername(reviewModel.UserId).Result;
             var user = await _userManager.FindByIdAsync(reviewModel.UserId.ToString());
 
             return new ReviewDto {

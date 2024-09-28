@@ -24,8 +24,6 @@ namespace eCommerceApi.Mappers
                 CreatedAt = orderModel.CreatedAt,
                 UpdatedAt = orderModel.UpdatedAt,
                 CreatedBy = user == null ? "" : user.UserName,
-                //Payments = orderModel.Payments.Select(p => p.ToPaymentDto()).ToList(),
-                //OrderItems = orderModel.OrderItems.Select(o => o.ToOrderItemDto())
             };
         }
 

@@ -15,7 +15,6 @@ namespace eCommerceApi.Mappers
             var user = await _userManager.FindByIdAsync(likeModel.UserId.ToString());
 
             return new LikeDto {
-                //Id = likeModel.Id,
                 LikeDate = likeModel.LikeDate,
                 LikeType = likeModel.LikeType,
                 LikedBy = user == null ? "" : user.UserName,

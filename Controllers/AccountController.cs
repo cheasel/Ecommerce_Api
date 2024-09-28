@@ -53,10 +53,10 @@ namespace eCommerceApi.Controllers
 
             var users = await _accountRepo.GetAllAsync();
 
-            //var userDto = users.Select( u => u.ToUserDto(_userManager)).ToList();
             var userDtos = new List<UserDto>();
             foreach (var user in users)
             {
+                var role = await _userManager.GetRolesAsync(user);
                 userDtos.Add(await user.ToUserDto(_userManager));
             }
 
@@ -64,10 +64,36 @@ namespace eCommerceApi.Controllers
         }
 
         // Get user by Id [Admin Only]
+        [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetById([FromRoute] int id){
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
 
+            var user = await _accountRepo.GetByIdAsync(id);
+
+            if(user == null){
+                return NotFound("User not found");
+            }
+
+            return Ok(user.ToUserDto(_userManager).Result);
+        }
 
         // Get user profile [Authorize]
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> GetProfile(){
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
 
+            var username = User.GetUsername();
+            var user = await _userManager.FindByNameAsync(username);
+            var role = await _userManager.GetRolesAsync(user);
+
+            return Ok(user.ToProfileDto(role.ToList()));
+        }
 
         // Login 
         [HttpPost("login")]

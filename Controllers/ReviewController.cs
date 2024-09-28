@@ -39,8 +39,14 @@ namespace eCommerceApi.Controllers
             }
 
             var reviews = await _reviewRepo.GetAllAsync();
+    
+            var reviewDto = new List<ReviewDto>();
+            foreach(var review in reviews){
+                var user = await _userManager.FindByIdAsync(review.UserId.ToString());
+                reviewDto.Add(await review.ToReviewDto(_userManager));
+            }
 
-            var reviewDto = reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList();
+            /*var reviewDto = reviews.Select(r => r.ToReviewDto(_userManager).Result).ToList();*/
 
             return Ok(reviewDto);
         }
@@ -53,6 +59,7 @@ namespace eCommerceApi.Controllers
             }
 
             var review = await _reviewRepo.GetByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(review.UserId.ToString());
 
             if(review == null){
                 return NotFound();
