@@ -11,7 +11,8 @@ namespace eCommerceApi.Mappers
 {
     public static class LikeMapper
     {
-        public static async Task<LikeDto> ToLikeDto(this Like likeModel, UserManager<User> _userManager){
+        public static async Task<LikeDto> ToLikeDto(this Like likeModel, UserManager<User> _userManager)
+        {
             var user = await _userManager.FindByIdAsync(likeModel.UserId.ToString());
 
             return new LikeDto {
@@ -21,8 +22,10 @@ namespace eCommerceApi.Mappers
             };
         }
 
-        public static Like ToLikeFromCreateDto(this CreateLikeDto likeDto){
-            return new Like {
+        public static Like ToLikeFromCreateDto(this CreateLikeDto likeDto)
+        {
+            return new Like
+            {
                 LikeDate = DateTime.Now,
                 LikeType = likeDto.LikeType,
             };

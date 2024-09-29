@@ -28,12 +28,13 @@ namespace eCommerceApi.Repository
                         .Include(o => o.Orders)
                         .Include(r => r.Reviews)
                         .Include(l => l.Likes)
+                        .AsNoTracking()
                         .AsQueryable();
 
             return await users.ToListAsync();
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public Task<User?> GetByIdAsync(int id)
         {
             return _userManager.Users
                             .Include(u => u.ShoppingCarts)

@@ -22,6 +22,7 @@ namespace eCommerceApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<UserRole> _roleManager;
@@ -30,8 +31,9 @@ namespace eCommerceApi.Controllers
         private readonly IProductRepository _productRepo;
         private readonly ApplicationDbContext _context;
 
-        public AccountController(UserManager<User> userManager, RoleManager<UserRole> roleManager, SignInManager<User> signInManager, IJwtTokenService tokenService, IAccountRepository accountRepo, IProductRepository productRepo, ApplicationDbContext context)
+        public AccountController(ILogger<AccountController> logger, UserManager<User> userManager, RoleManager<UserRole> roleManager, SignInManager<User> signInManager, IJwtTokenService tokenService, IAccountRepository accountRepo, IProductRepository productRepo, ApplicationDbContext context)
         {
+            _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
@@ -46,21 +48,25 @@ namespace eCommerceApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+            try{
+                var users = await _accountRepo.GetAllAsync();
+
+                if(users == null || !users.Any()){
+                    return NotFound("No users found.");
+                }
+
+                var userDtos = new List<UserDto>();
+
+                foreach (var user in users)
+                {
+                    userDtos.Add(await user.ToUserDto(_userManager));
+                }
+
+                return Ok(userDtos);
+            } catch (Exception ex){
+                _logger.LogError(ex, "An error occurred while fetching users");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
-
-            var users = await _accountRepo.GetAllAsync();
-
-            var userDtos = new List<UserDto>();
-            foreach (var user in users)
-            {
-                var role = await _userManager.GetRolesAsync(user);
-                userDtos.Add(await user.ToUserDto(_userManager));
-            }
-
-            return Ok(userDtos);
         }
 
         // Get user by Id [Admin Only]

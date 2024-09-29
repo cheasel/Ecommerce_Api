@@ -59,7 +59,9 @@ namespace eCommerceApi.Controllers
                 return NotFound();
             }
 
-            return Ok(product.ToFullProductDto(_categoryRepo, _userManager));
+            var productDto = product.ToFullProductDto(_categoryRepo, _userManager);
+
+            return Ok(productDto);
         }
 
         // Create product [Vendor only]
